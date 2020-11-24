@@ -12,7 +12,7 @@ struct ContentView : View {
 	var body: some View {
 		NavigationView {
 			ZStack {
-				ARDisplayView()
+				ARDisplayView().edgesIgnoringSafeArea(.all)
 			}.navigationBarTitle(Text("title"), displayMode: .inline)
 			.navigationBarItems(trailing: NavigationLink(
 									destination: SettingsUIView(),

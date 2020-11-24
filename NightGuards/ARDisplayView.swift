@@ -10,9 +10,7 @@ import RealityKit
 
 struct ARDisplayView: View {
 	var body: some View {
-		NavigationView {
-			ARViewContainer()
-		}
+		ARViewContainer()
 	}
 }
 
