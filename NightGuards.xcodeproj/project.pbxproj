@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A7254256C916200DE9837 /* LaunchScreen.swift */; };
+		EFF97F09256F13700022E1A5 /* HeroUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF97F08256F13700022E1A5 /* HeroUIView.swift */; };
 		EFFAB4F92565ACA4008FDDF4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFFAB4F82565ACA4008FDDF4 /* AppDelegate.swift */; };
 		EFFAB4FB2565ACA4008FDDF4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFFAB4FA2565ACA4008FDDF4 /* ContentView.swift */; };
 		EFFAB4FD2565ACA4008FDDF4 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = EFFAB4FC2565ACA4008FDDF4 /* Experience.rcproject */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		EF0A7254256C916200DE9837 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
+		EFF97F08256F13700022E1A5 /* HeroUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroUIView.swift; sourceTree = "<group>"; };
 		EFFAB4F52565ACA4008FDDF4 /* NightGuards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NightGuards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFFAB4F82565ACA4008FDDF4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EFFAB4FA2565ACA4008FDDF4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			children = (
 				EFFAB4F82565ACA4008FDDF4 /* AppDelegate.swift */,
 				EFFAB4FA2565ACA4008FDDF4 /* ContentView.swift */,
+				EFF97F08256F13700022E1A5 /* HeroUIView.swift */,
 				EFFAB52D2565D7E5008FDDF4 /* SettingsUIView.swift */,
 				EFFAB5282565CC23008FDDF4 /* ARDisplayView.swift */,
 				EFFAB4FC2565ACA4008FDDF4 /* Experience.rcproject */,
@@ -271,6 +274,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFF97F09256F13700022E1A5 /* HeroUIView.swift in Sources */,
 				EFFAB52E2565D7E6008FDDF4 /* SettingsUIView.swift in Sources */,
 				EFFAB4FB2565ACA4008FDDF4 /* ContentView.swift in Sources */,
 				EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */,
