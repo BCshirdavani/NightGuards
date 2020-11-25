@@ -13,7 +13,7 @@ struct ContentView : View {
 		NavigationView {
 			ZStack {
 				ARDisplayView().edgesIgnoringSafeArea(.all)
-			}.navigationBarTitle(Text("title"), displayMode: .inline)
+			}.navigationBarTitle(Text("Night Guards"), displayMode: .inline)
 			.navigationBarItems(trailing: NavigationLink(
 									destination: SettingsUIView(),
 									label: {
