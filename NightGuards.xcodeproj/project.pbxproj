@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D048D1BF257C345C00C9A376 /* Cone2.reality in Resources */ = {isa = PBXBuildFile; fileRef = D048D1BE257C345C00C9A376 /* Cone2.reality */; };
 		D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */ = {isa = PBXBuildFile; fileRef = D0CBB5722579D964005BD4F8 /* Cone.reality */; };
 		EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A7254256C916200DE9837 /* LaunchScreen.swift */; };
 		EFF97F09256F13700022E1A5 /* HeroUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF97F08256F13700022E1A5 /* HeroUIView.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D048D1BE257C345C00C9A376 /* Cone2.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone2.reality; sourceTree = "<group>"; };
 		D0CBB5722579D964005BD4F8 /* Cone.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone.reality; sourceTree = "<group>"; };
 		EF0A7254256C916200DE9837 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		EFF97F08256F13700022E1A5 /* HeroUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroUIView.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 		EFFAB4F72565ACA4008FDDF4 /* NightGuards */ = {
 			isa = PBXGroup;
 			children = (
+				D048D1BE257C345C00C9A376 /* Cone2.reality */,
 				D0CBB5722579D964005BD4F8 /* Cone.reality */,
 				EFFAB4F82565ACA4008FDDF4 /* AppDelegate.swift */,
 				EFFAB4FA2565ACA4008FDDF4 /* ContentView.swift */,
@@ -251,6 +254,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D048D1BF257C345C00C9A376 /* Cone2.reality in Resources */,
 				EFFAB5022565ACA5008FDDF4 /* Preview Assets.xcassets in Resources */,
 				D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */,
 				EFFAB4FF2565ACA5008FDDF4 /* Assets.xcassets in Resources */,

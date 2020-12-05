@@ -18,7 +18,6 @@ struct ARDisplayView: View {
                     self.placeBall(position: value.location)
                 }
         )
-        
     }
     
     func placeBall(position: CGPoint) {
@@ -63,7 +62,7 @@ struct ARViewContainer: UIViewRepresentable {
 
         if ARGeoTrackingConfiguration.isSupported {
             print(" * supports scene reconstruction")
-            self.arView.debugOptions = [.showSceneUnderstanding, .showStatistics]
+            self.arView.debugOptions = [.showSceneUnderstanding, .showAnchorOrigins]
             configuration.sceneReconstruction = [.meshWithClassification]
             self.arView.environment.sceneUnderstanding.options.insert(.occlusion)
         } else {
@@ -74,14 +73,16 @@ struct ARViewContainer: UIViewRepresentable {
     }
     
     func makeBallEntity() -> ModelEntity {
+        print(" - makeBallEntity()")
         let mesh = MeshResource.generateSphere(radius: 0.03)
         let color = UIColor.red
         let material = SimpleMaterial(color: color, isMetallic: false)
         let coloredSphere = ModelEntity(mesh: mesh, materials: [material])
         return coloredSphere
     }
-    
+
     func makeBallAnchor() -> ARAnchor {
+        print(" - makeBallAnchor()")
         let trans = simd_float4x4(0.0)
         let anchor = ARAnchor(transform: trans)
         let sphereNode = SCNNode()
@@ -89,10 +90,15 @@ struct ARViewContainer: UIViewRepresentable {
         sphereNodeGeometry.firstMaterial?.diffuse.contents = UIColor.cyan
         sphereNode.geometry = sphereNodeGeometry
         return anchor
-
+    }
+    
+    func makeConeModel() -> Entity {
+        let entity = try! Entity.load(named: "Cone2")
+        return entity
     }
     
     func castRaySimple(point: CGPoint) {
+        print(" - castRaySimple()")
         let tapLocation: CGPoint = point
         let estimatedPlane: ARRaycastQuery.Target = .estimatedPlane
         let alignment: ARRaycastQuery.TargetAlignment = .horizontal
@@ -106,10 +112,8 @@ struct ARViewContainer: UIViewRepresentable {
             return
         }
         let anchor = AnchorEntity(world: rayCast.worldTransform)
-        let model = makeBallEntity()
-        anchor.addChild(model)
-        arView.scene.anchors.append(anchor)
-        arView.session.add(anchor: makeBallAnchor())
+        anchor.addChild(makeConeModel())
+        arView.scene.addAnchor(anchor)
     }
     
 }
