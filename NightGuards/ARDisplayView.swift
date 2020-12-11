@@ -10,19 +10,63 @@ import RealityKit
 import ARKit
 
 struct ARDisplayView: View {
-    let arViewContainer: ARViewContainer = ARViewContainer()
+	let arViewContainer: ARViewContainer
+	@State private var anchorPlaced: Bool = false
+
+	init() {
+		self.arViewContainer = ARViewContainer()
+	}
+
     var body: some View {
-        arViewContainer.gesture(
-            DragGesture(minimumDistance: 0, coordinateSpace: .global)
-                .onEnded { value in
-                    self.placeBall(position: value.location)
-                }
-        )
+		ZStack {
+			arViewContainer.gesture(
+				DragGesture(minimumDistance: 0, coordinateSpace: .global)
+					.onEnded { value in
+						self.placeBall(position: value.location)
+					}
+			)
+			VStack {
+				Spacer()
+				HStack {
+					ZStack {
+						Circle()
+							.frame(width: 60, height: 60, alignment: .center)
+							.padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
+							.foregroundColor(.black)
+						Text(buttonText()).foregroundColor(.white)
+					}
+					Spacer()
+					NavigationLink(destination: HeroUIView()) {
+						ZStack {
+							Circle()
+								.frame(width: 60, height: 60, alignment: .center)
+								.padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
+								.foregroundColor(.black)
+							Text("Hero").foregroundColor(.white)
+						}
+					}
+				}
+			}
+		}
+
     }
     
     func placeBall(position: CGPoint) {
-        arViewContainer.castRaySimple(point: position)
+		arViewContainer.castRaySimple(point: position)
+		DispatchQueue.main.async {
+			toggleAnchorStatus()
+		}
     }
+
+	func toggleAnchorStatus() {
+		let oldStatus = anchorPlaced
+		let newStatus = !oldStatus
+		anchorPlaced = newStatus
+	}
+
+	func buttonText() -> String {
+		return anchorPlaced ? "place?" : "move?"
+	}
 }
 
 
@@ -58,11 +102,11 @@ struct ARViewContainer: UIViewRepresentable {
         configuration.planeDetection = [.horizontal, .vertical]
         configuration.worldAlignment = .gravityAndHeading
         configuration.environmentTexturing = .automatic
-        let options: ARSession.RunOptions = [.resetTracking, .removeExistingAnchors]
+		let options: ARSession.RunOptions = [.stopTrackedRaycasts, .resetTracking, .removeExistingAnchors]
 
         if ARGeoTrackingConfiguration.isSupported {
             print(" * supports scene reconstruction")
-            self.arView.debugOptions = [.showSceneUnderstanding, .showAnchorOrigins]
+            self.arView.debugOptions = [.showSceneUnderstanding/*, .showAnchorOrigins*/]
             configuration.sceneReconstruction = [.meshWithClassification]
             self.arView.environment.sceneUnderstanding.options.insert(.occlusion)
         } else {
@@ -73,6 +117,8 @@ struct ARViewContainer: UIViewRepresentable {
     }
     
     func makeBallEntity() -> ModelEntity {
+		// this ball has no physics, and adds successive balls properly, without
+		// fucking with old anchors
         print(" - makeBallEntity()")
         let mesh = MeshResource.generateSphere(radius: 0.03)
         let color = UIColor.red
@@ -80,19 +126,10 @@ struct ARViewContainer: UIViewRepresentable {
         let coloredSphere = ModelEntity(mesh: mesh, materials: [material])
         return coloredSphere
     }
-
-    func makeBallAnchor() -> ARAnchor {
-        print(" - makeBallAnchor()")
-        let trans = simd_float4x4(0.0)
-        let anchor = ARAnchor(transform: trans)
-        let sphereNode = SCNNode()
-        let sphereNodeGeometry = SCNSphere(radius: 0.01)
-        sphereNodeGeometry.firstMaterial?.diffuse.contents = UIColor.cyan
-        sphereNode.geometry = sphereNodeGeometry
-        return anchor
-    }
     
     func makeConeModel() -> Entity {
+		// TODO: the cone scene has physics, and erroneously updates old anchor planes
+		// when adding new anchor model
         let entity = try! Entity.load(named: "Cone2")
         return entity
     }
@@ -100,19 +137,21 @@ struct ARViewContainer: UIViewRepresentable {
     func castRaySimple(point: CGPoint) {
         print(" - castRaySimple()")
         let tapLocation: CGPoint = point
-        let estimatedPlane: ARRaycastQuery.Target = .estimatedPlane
-        let alignment: ARRaycastQuery.TargetAlignment = .horizontal
+		let estimatedPlane: ARRaycastQuery.Target = .existingPlaneGeometry
+        let alignment: ARRaycastQuery.TargetAlignment = .any
 
         let result: [ARRaycastResult] = arView.raycast(from: tapLocation,
                                                        allowing: estimatedPlane,
-                                                       alignment: alignment)
+													   alignment: alignment)
         guard let rayCast: ARRaycastResult = result.first
         else {
             print("....no rayCast result....")
             return
         }
         let anchor = AnchorEntity(world: rayCast.worldTransform)
-        anchor.addChild(makeConeModel())
+//		let entity = makeConeModel()
+		let ball = makeBallEntity()
+        anchor.addChild(ball)
         arView.scene.addAnchor(anchor)
     }
     
@@ -120,6 +159,6 @@ struct ARViewContainer: UIViewRepresentable {
 
 struct ARDisplayView_Previews: PreviewProvider {
     static var previews: some View {
-        ARDisplayView()
+		ARDisplayView()
     }
 }

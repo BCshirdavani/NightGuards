@@ -10,6 +10,8 @@
 		D048D1BF257C345C00C9A376 /* Cone2.reality in Resources */ = {isa = PBXBuildFile; fileRef = D048D1BE257C345C00C9A376 /* Cone2.reality */; };
 		D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */ = {isa = PBXBuildFile; fileRef = D0CBB5722579D964005BD4F8 /* Cone.reality */; };
 		EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A7254256C916200DE9837 /* LaunchScreen.swift */; };
+		EF5D66C2257EE8BC003E0A36 /* kangaroo.usdz in Resources */ = {isa = PBXBuildFile; fileRef = EF5D66C1257EE8BC003E0A36 /* kangaroo.usdz */; };
+		EF5D66C7257EEC22003E0A36 /* SharedUserSelections.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5D66C6257EEC22003E0A36 /* SharedUserSelections.swift */; };
 		EFF97F09256F13700022E1A5 /* HeroUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF97F08256F13700022E1A5 /* HeroUIView.swift */; };
 		EFFAB4F92565ACA4008FDDF4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFFAB4F82565ACA4008FDDF4 /* AppDelegate.swift */; };
 		EFFAB4FB2565ACA4008FDDF4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFFAB4FA2565ACA4008FDDF4 /* ContentView.swift */; };
@@ -43,6 +45,8 @@
 		D048D1BE257C345C00C9A376 /* Cone2.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone2.reality; sourceTree = "<group>"; };
 		D0CBB5722579D964005BD4F8 /* Cone.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone.reality; sourceTree = "<group>"; };
 		EF0A7254256C916200DE9837 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
+		EF5D66C1257EE8BC003E0A36 /* kangaroo.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = kangaroo.usdz; sourceTree = "<group>"; };
+		EF5D66C6257EEC22003E0A36 /* SharedUserSelections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUserSelections.swift; sourceTree = "<group>"; };
 		EFF97F08256F13700022E1A5 /* HeroUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroUIView.swift; sourceTree = "<group>"; };
 		EFFAB4F52565ACA4008FDDF4 /* NightGuards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NightGuards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFFAB4F82565ACA4008FDDF4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +113,7 @@
 		EFFAB4F72565ACA4008FDDF4 /* NightGuards */ = {
 			isa = PBXGroup;
 			children = (
+				EF5D66C1257EE8BC003E0A36 /* kangaroo.usdz */,
 				D048D1BE257C345C00C9A376 /* Cone2.reality */,
 				D0CBB5722579D964005BD4F8 /* Cone.reality */,
 				EFFAB4F82565ACA4008FDDF4 /* AppDelegate.swift */,
@@ -121,6 +126,7 @@
 				EFFAB5032565ACA5008FDDF4 /* Info.plist */,
 				EFFAB5002565ACA5008FDDF4 /* Preview Content */,
 				EF0A7254256C916200DE9837 /* LaunchScreen.swift */,
+				EF5D66C6257EEC22003E0A36 /* SharedUserSelections.swift */,
 			);
 			path = NightGuards;
 			sourceTree = "<group>";
@@ -255,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D048D1BF257C345C00C9A376 /* Cone2.reality in Resources */,
+				EF5D66C2257EE8BC003E0A36 /* kangaroo.usdz in Resources */,
 				EFFAB5022565ACA5008FDDF4 /* Preview Assets.xcassets in Resources */,
 				D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */,
 				EFFAB4FF2565ACA5008FDDF4 /* Assets.xcassets in Resources */,
@@ -286,6 +293,7 @@
 				EFFAB52E2565D7E6008FDDF4 /* SettingsUIView.swift in Sources */,
 				EFFAB4FB2565ACA4008FDDF4 /* ContentView.swift in Sources */,
 				EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */,
+				EF5D66C7257EEC22003E0A36 /* SharedUserSelections.swift in Sources */,
 				EFFAB4F92565ACA4008FDDF4 /* AppDelegate.swift in Sources */,
 				EFFAB5292565CC23008FDDF4 /* ARDisplayView.swift in Sources */,
 				EFFAB4FD2565ACA4008FDDF4 /* Experience.rcproject in Sources */,
