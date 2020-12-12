@@ -12,6 +12,7 @@ import ARKit
 struct ARDisplayView: View {
 	let arViewContainer: ARViewContainer
 	@State private var anchorPlaced: Bool = false
+    @State private var heroSelected: String = "none"
 
 	init() {
 		self.arViewContainer = ARViewContainer()
@@ -22,7 +23,7 @@ struct ARDisplayView: View {
 			arViewContainer.gesture(
 				DragGesture(minimumDistance: 0, coordinateSpace: .global)
 					.onEnded { value in
-						self.placeBall(position: value.location)
+						self.placeBall(position: value.location, object: heroSelected)
 					}
 			)
 			VStack {
@@ -36,23 +37,22 @@ struct ARDisplayView: View {
 						Text(buttonText()).foregroundColor(.white)
 					}
 					Spacer()
-					NavigationLink(destination: HeroUIView()) {
+                    NavigationLink(destination: HeroUIView(heroSelected: $heroSelected)) {
 						ZStack {
 							Circle()
 								.frame(width: 60, height: 60, alignment: .center)
 								.padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
 								.foregroundColor(.black)
-							Text("Hero").foregroundColor(.white)
+							Text(heroSelected).foregroundColor(.white)
 						}
 					}
 				}
 			}
 		}
-
     }
     
-    func placeBall(position: CGPoint) {
-		arViewContainer.castRaySimple(point: position)
+    func placeBall(position: CGPoint, object: String) {
+        arViewContainer.castRaySimple(point: position, object: object)
 		DispatchQueue.main.async {
 			toggleAnchorStatus()
 		}
@@ -72,7 +72,7 @@ struct ARDisplayView: View {
 
 
 struct ARViewContainer: UIViewRepresentable {
-    
+        
     var arView: ARView
     
     var worldMapURL: URL = {
@@ -134,7 +134,7 @@ struct ARViewContainer: UIViewRepresentable {
         return entity
     }
     
-    func castRaySimple(point: CGPoint) {
+    func castRaySimple(point: CGPoint, object: String) {
         print(" - castRaySimple()")
         let tapLocation: CGPoint = point
 		let estimatedPlane: ARRaycastQuery.Target = .existingPlaneGeometry
@@ -149,10 +149,22 @@ struct ARViewContainer: UIViewRepresentable {
             return
         }
         let anchor = AnchorEntity(world: rayCast.worldTransform)
+        switch object {
+        case "ball":
+            let ball = makeBallEntity()
+            anchor.addChild(ball)
+            arView.scene.addAnchor(anchor)
+        case "cone":
+            let entity = makeConeModel()
+            anchor.addChild(entity)
+            arView.scene.addAnchor(anchor)
+        default:
+            return
+        }
 //		let entity = makeConeModel()
-		let ball = makeBallEntity()
-        anchor.addChild(ball)
-        arView.scene.addAnchor(anchor)
+//		let ball = makeBallEntity()
+//        anchor.addChild(ball)
+//        arView.scene.addAnchor(anchor)
     }
     
 }

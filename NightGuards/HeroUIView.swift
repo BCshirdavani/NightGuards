@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HeroUIView: View {
+    @Binding var heroSelected: String
+    
 	var body: some View {
 		Text("Choose Guardian Here")
 		List {
@@ -17,6 +19,7 @@ struct HeroUIView: View {
 				Image.init(systemName: "circle.fill").scaleEffect(2)
 			}.contentShape(Rectangle()).onTapGesture {
 				print("ball selected")
+                heroSelected = "ball"
 			}.padding(10)
 			HStack {
 				Text("Cone").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -24,6 +27,7 @@ struct HeroUIView: View {
 				Image.init(systemName: "arrowtriangle.up").scaleEffect(2)
 			}.contentShape(Rectangle()).onTapGesture {
 				print("cone seleced")
+                heroSelected = "cone"
 			}.padding(10)
 			HStack {
 				Text("Kangaroo").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -31,6 +35,7 @@ struct HeroUIView: View {
 				Image.init(systemName: "hare").scaleEffect(2)
 			}.contentShape(Rectangle()).onTapGesture {
 				print("kangaroo seleced")
+                heroSelected = "kang"
 			}.padding(10)
 		}
 		.navigationBarTitle(Text("Guards"), displayMode: .inline)
@@ -39,6 +44,7 @@ struct HeroUIView: View {
 
 struct HeroUIView_Previews: PreviewProvider {
 	static var previews: some View {
-		HeroUIView()
+//        HeroUIView()
+        Text("test")
 	}
 }
