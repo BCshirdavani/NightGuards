@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D048D1BF257C345C00C9A376 /* Cone2.reality in Resources */ = {isa = PBXBuildFile; fileRef = D048D1BE257C345C00C9A376 /* Cone2.reality */; };
+		D048D1C725855DAC00C9A376 /* HeroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1C625855DAC00C9A376 /* HeroModel.swift */; };
+		D048D1CC25855FF500C9A376 /* HeroFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1CB25855FF500C9A376 /* HeroFactory.swift */; };
 		D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */ = {isa = PBXBuildFile; fileRef = D0CBB5722579D964005BD4F8 /* Cone.reality */; };
 		EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A7254256C916200DE9837 /* LaunchScreen.swift */; };
 		EF5D66C2257EE8BC003E0A36 /* kangaroo.usdz in Resources */ = {isa = PBXBuildFile; fileRef = EF5D66C1257EE8BC003E0A36 /* kangaroo.usdz */; };
@@ -43,6 +45,8 @@
 
 /* Begin PBXFileReference section */
 		D048D1BE257C345C00C9A376 /* Cone2.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone2.reality; sourceTree = "<group>"; };
+		D048D1C625855DAC00C9A376 /* HeroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroModel.swift; sourceTree = "<group>"; };
+		D048D1CB25855FF500C9A376 /* HeroFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroFactory.swift; sourceTree = "<group>"; };
 		D0CBB5722579D964005BD4F8 /* Cone.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone.reality; sourceTree = "<group>"; };
 		EF0A7254256C916200DE9837 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		EF5D66C1257EE8BC003E0A36 /* kangaroo.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = kangaroo.usdz; sourceTree = "<group>"; };
@@ -127,6 +131,8 @@
 				EFFAB5002565ACA5008FDDF4 /* Preview Content */,
 				EF0A7254256C916200DE9837 /* LaunchScreen.swift */,
 				EF5D66C6257EEC22003E0A36 /* SharedUserSelections.swift */,
+				D048D1C625855DAC00C9A376 /* HeroModel.swift */,
+				D048D1CB25855FF500C9A376 /* HeroFactory.swift */,
 			);
 			path = NightGuards;
 			sourceTree = "<group>";
@@ -297,6 +303,8 @@
 				EFFAB4F92565ACA4008FDDF4 /* AppDelegate.swift in Sources */,
 				EFFAB5292565CC23008FDDF4 /* ARDisplayView.swift in Sources */,
 				EFFAB4FD2565ACA4008FDDF4 /* Experience.rcproject in Sources */,
+				D048D1CC25855FF500C9A376 /* HeroFactory.swift in Sources */,
+				D048D1C725855DAC00C9A376 /* HeroModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
