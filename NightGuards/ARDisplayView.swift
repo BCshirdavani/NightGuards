@@ -13,6 +13,7 @@ struct ARDisplayView: View {
 	let arViewContainer: ARViewContainer
 	@State private var anchorPlaced: Bool = false
     @State private var heroSelected: String = "none"
+    let heroes: Heroes = Heroes()
 
 	init() {
 		self.arViewContainer = ARViewContainer()
@@ -20,12 +21,7 @@ struct ARDisplayView: View {
 
     var body: some View {
 		ZStack {
-			arViewContainer.gesture(
-				DragGesture(minimumDistance: 0, coordinateSpace: .global)
-					.onEnded { value in
-						self.placeBall(position: value.location, object: heroSelected)
-					}
-			)
+			arViewContainer
 			VStack {
 				Spacer()
 				HStack {
@@ -34,10 +30,13 @@ struct ARDisplayView: View {
 							.frame(width: 60, height: 60, alignment: .center)
 							.padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
 							.foregroundColor(.black)
+                            .onTapGesture {
+                                self.placeHero(position: arViewContainer.arView.center, object: heroSelected)
+                            }
 						Text(buttonText()).foregroundColor(.white)
 					}
 					Spacer()
-                    NavigationLink(destination: HeroUIView(heroSelected: $heroSelected)) {
+                    NavigationLink(destination: HeroUIView(heroSelected: $heroSelected, anchorPlaced: $anchorPlaced)) {
 						ZStack {
 							Circle()
 								.frame(width: 60, height: 60, alignment: .center)
@@ -51,21 +50,18 @@ struct ARDisplayView: View {
 		}
     }
     
-    func placeBall(position: CGPoint, object: String) {
+    func placeHero(position: CGPoint, object: String) {
         arViewContainer.castRaySimple(point: position, object: object)
-		DispatchQueue.main.async {
-			toggleAnchorStatus()
-		}
+        if let hero = Heroes.heroDict[object] {
+            anchorPlaced = hero.isPlaced()
+        }
     }
 
-	func toggleAnchorStatus() {
-		let oldStatus = anchorPlaced
-		let newStatus = !oldStatus
-		anchorPlaced = newStatus
-	}
-
 	func buttonText() -> String {
-		return anchorPlaced ? "place?" : "move?"
+        if Heroes.heroDict[heroSelected] != nil {
+            return anchorPlaced ? "move" : "place"
+        }
+        return "..."
 	}
 }
 
@@ -74,6 +70,10 @@ struct ARDisplayView: View {
 struct ARViewContainer: UIViewRepresentable {
         
     var arView: ARView
+    
+    let heroFactory = HeroFactory()
+    
+    let heroes: Heroes = Heroes()
     
     var worldMapURL: URL = {
         do {
@@ -149,22 +149,12 @@ struct ARViewContainer: UIViewRepresentable {
             return
         }
         let anchor = AnchorEntity(world: rayCast.worldTransform)
-        switch object {
-        case "ball":
-            let ball = makeBallEntity()
-            anchor.addChild(ball)
+        
+        if let model = Heroes.heroDict[object]?.model {
+            Heroes.heroDict[object]?.modifyAnchor(newAnchor: anchor)
+            anchor.addChild(model)
             arView.scene.addAnchor(anchor)
-        case "cone":
-            let entity = makeConeModel()
-            anchor.addChild(entity)
-            arView.scene.addAnchor(anchor)
-        default:
-            return
         }
-//		let entity = makeConeModel()
-//		let ball = makeBallEntity()
-//        anchor.addChild(ball)
-//        arView.scene.addAnchor(anchor)
     }
     
 }

@@ -35,6 +35,26 @@ class HeroModel: Hero {
         anchorEntity = nil
     }
     
+    func isPlaced() -> Bool {
+        print(" - anchorEntity...")
+        if anchorEntity != nil {
+            print(anchorEntity.debugDescription)
+            return true
+        } else {
+            print(anchorEntity.debugDescription)
+            return false
+        }
+    }
+}
+
+class Heroes {
+    public static var heroDict = [String : HeroModel]()
+    
+    init() {
+        Heroes.heroDict["ball"] = HeroModel(heroName: "ball")
+        Heroes.heroDict["cone"] = HeroModel(heroName: "cone")
+        Heroes.heroDict["kang"] = HeroModel(heroName: "kang")
+    }
 }
 
 

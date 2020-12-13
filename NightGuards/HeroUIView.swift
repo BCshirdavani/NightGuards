@@ -9,6 +9,8 @@ import SwiftUI
 
 struct HeroUIView: View {
     @Binding var heroSelected: String
+    @Binding var anchorPlaced: Bool
+//    let heroes: Heroes = Heroes()
     
 	var body: some View {
 		Text("Choose Guardian Here")
@@ -20,6 +22,10 @@ struct HeroUIView: View {
 			}.contentShape(Rectangle()).onTapGesture {
 				print("ball selected")
                 heroSelected = "ball"
+                if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
+                    anchorPlaced = anchorStatus
+                }
+                print("anchorPlaced:\t\(anchorPlaced)")
 			}.padding(10)
 			HStack {
 				Text("Cone").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -28,6 +34,10 @@ struct HeroUIView: View {
 			}.contentShape(Rectangle()).onTapGesture {
 				print("cone seleced")
                 heroSelected = "cone"
+                if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
+                    anchorPlaced = anchorStatus
+                }
+                print("anchorPlaced:\t\(anchorPlaced)")
 			}.padding(10)
 			HStack {
 				Text("Kangaroo").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -36,6 +46,10 @@ struct HeroUIView: View {
 			}.contentShape(Rectangle()).onTapGesture {
 				print("kangaroo seleced")
                 heroSelected = "kang"
+                if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
+                    anchorPlaced = anchorStatus
+                }
+                print("anchorPlaced:\t\(anchorPlaced)")
 			}.padding(10)
 		}
 		.navigationBarTitle(Text("Guards"), displayMode: .inline)
