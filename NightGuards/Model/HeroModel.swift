@@ -23,6 +23,8 @@ class HeroModel: Hero {
     
     var model: Entity
     
+    var heroMapURLString: String?
+    
     init(heroName: String) {
         model = heroFactory.buildHeroModel(heroName: heroName)
     }
@@ -44,6 +46,14 @@ class HeroModel: Hero {
             print(anchorEntity.debugDescription)
             return false
         }
+    }
+    
+    func setHeroMap(mapName: String) {
+        heroMapURLString = mapName
+    }
+    
+    func deleteMap() {
+        heroMapURLString = nil
     }
 }
 
