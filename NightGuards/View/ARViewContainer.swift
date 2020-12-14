@@ -37,9 +37,7 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     func makeUIView(context: Context) -> ARView {
         
         configAR()
-        
-        session.delegate = self
-        
+                
         arView.session.delegate = self
         
         return arView
