@@ -13,10 +13,10 @@ protocol Hero {
     var anchorEntity: AnchorEntity? { get }
     var model: Entity { get }
     var heroFactory: HeroFactory { get }
-    
+    var heroMapURLString: String? { get set }
 }
 
-class HeroModel: Hero {
+final class HeroImpl: Hero {
     var heroFactory: HeroFactory = HeroFactory()
     
     var anchorEntity: AnchorEntity?
@@ -25,8 +25,16 @@ class HeroModel: Hero {
     
     var heroMapURLString: String?
     
+    let heroID: UUID
+    
+    let heroUnlocked: Bool = true
+    
+    let heroName: String
+    
     init(heroName: String) {
         model = heroFactory.buildHeroModel(heroName: heroName)
+        heroID = heroFactory.makeHeroID(heroName: heroName)
+        self.heroName = heroName
     }
     
     func modifyAnchor(newAnchor: AnchorEntity) {
@@ -57,13 +65,13 @@ class HeroModel: Hero {
     }
 }
 
-class Heroes {
-    public static var heroDict = [String : HeroModel]()
+final class Heroes {
+    public static var heroDict = [String : HeroImpl]()
     
     init() {
-        Heroes.heroDict["ball"] = HeroModel(heroName: "ball")
-        Heroes.heroDict["cone"] = HeroModel(heroName: "cone")
-        Heroes.heroDict["kang"] = HeroModel(heroName: "kang")
+        Heroes.heroDict["ball"] = HeroImpl(heroName: "ball")
+        Heroes.heroDict["cone"] = HeroImpl(heroName: "cone")
+        Heroes.heroDict["kang"] = HeroImpl(heroName: "kang")
     }
 }
 

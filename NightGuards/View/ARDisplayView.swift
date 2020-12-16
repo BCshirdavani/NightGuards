@@ -40,7 +40,7 @@ struct ARDisplayView: View {
 						Text(buttonText()).foregroundColor(.white)
 					}
 					Spacer()
-                    NavigationLink(destination: HeroUIView(heroSelected: $heroSelected, anchorPlaced: $anchorPlaced)) {
+                    NavigationLink(destination: HeroUIView(heroSelected: $heroSelected, anchorPlaced: $anchorPlaced, heroes: heroes)) {
 						ZStack {
 							Circle()
 								.frame(width: 60, height: 60, alignment: .center)
@@ -68,6 +68,7 @@ struct ARDisplayView: View {
         return "..."
 	}
     
+    // TODO: figure out how to mutate the @State property to update with tracking status
     func setCamStatus() {
         if let trackState = arViewContainer.arView.session.currentFrame?.camera.trackingState {
             switch trackState {

@@ -12,15 +12,11 @@ import RealityKit
 
 
 final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
-        
     var arView: ARView
-    
     let heroFactory = HeroFactory()
-    
     let heroes: Heroes = Heroes()
-    
     let session: ARSession
-    
+    let dataController: DataPersistController = DataPersistController()
     var worldMapURL: URL = {
         do {
             return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("worldMapURL")
@@ -35,13 +31,9 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     }
     
     func makeUIView(context: Context) -> ARView {
-        
         configAR()
-                
         arView.session.delegate = self
-        
         return arView
-        
     }
     
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
@@ -68,25 +60,6 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
         }
         self.arView.session.run(configuration, options: options)
     }
-    
-    func makeBallEntity() -> ModelEntity {
-        // this ball has no physics, and adds successive balls properly, without
-        // fucking with old anchors
-        print(" - makeBallEntity()")
-        let mesh = MeshResource.generateSphere(radius: 0.03)
-        let color = UIColor.red
-        let material = SimpleMaterial(color: color, isMetallic: false)
-        let coloredSphere = ModelEntity(mesh: mesh, materials: [material])
-        return coloredSphere
-    }
-    
-    func makeConeModel() -> Entity {
-        // TODO: the cone scene has physics, and erroneously updates old anchor planes
-        // when adding new anchor model
-        let entity = try! Entity.load(named: "Cone2")
-        return entity
-    }
-    
     
     func castRaySimple(point: CGPoint, object: String) {
         print(" - castRaySimple()")

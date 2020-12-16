@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		// Create the SwiftUI view that provides the window contents.
 		let contentView = ContentView()
+        
+        // printing directory to help find database
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
 
 		// Use a UIHostingController as window root view controller.
 		let window = UIWindow(frame: UIScreen.main.bounds)
@@ -43,6 +47,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func applicationDidBecomeActive(_ application: UIApplication) {
 		// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 	}
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        self.saveContext()
+    }
+    
+    // MARK: - Core Data stack
+
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "DataModel")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        return container
+    }()
+
+    // MARK: - Core Data Saving support
+
+    func saveContext () {
+        let context = persistentContainer.viewContext
+        print(" ...saving to CoreData...")
+        if context.hasChanges {
+            do {
+                print(context.debugDescription)
+                print(context.description)
+                try context.save()
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
 
 
 }

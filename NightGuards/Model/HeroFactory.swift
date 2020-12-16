@@ -55,4 +55,22 @@ struct HeroFactory {
         return entity
     }
     
+    func makeHeroID(heroName: String) -> UUID {
+        let defaultID: UUID = UUID()
+        switch heroName {
+        case "ball":
+            let idString = "BALLE1F8-C36C-495A-93FC-0C247A3E6E5F"
+            let uuid = UUID(uuidString: idString) ?? defaultID
+            return uuid
+        case "cone":
+            let idString = "CONEE1F8-C36C-495A-93FC-0C247A3E6E5F"
+            let uuid = UUID(uuidString: idString) ?? defaultID
+            return uuid
+        default:
+            let idString = "KANGE1F8-C36C-495A-93FC-0C247A3E6E5F"
+            let uuid = UUID(uuidString: idString) ?? defaultID
+            return uuid
+        }
+    }
+    
 }

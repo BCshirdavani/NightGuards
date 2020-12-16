@@ -6,11 +6,19 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct HeroUIView: View {
     @Binding var heroSelected: String
     @Binding var anchorPlaced: Bool
-//    let heroes: Heroes = Heroes()
+    var dataController: DataPersistController = DataPersistController()
+    let heroes: Heroes
+    
+    init(heroSelected: Binding<String>, anchorPlaced: Binding<Bool>, heroes: Heroes) {
+        _heroSelected = heroSelected
+        _anchorPlaced = anchorPlaced
+        self.heroes = heroes
+    }
     
 	var body: some View {
 		Text("Choose Guardian Here")
@@ -33,11 +41,15 @@ struct HeroUIView: View {
 				Image.init(systemName: "arrowtriangle.up").scaleEffect(2)
 			}.contentShape(Rectangle()).onTapGesture {
 				print("cone seleced")
-                heroSelected = "cone"
+                self.heroSelected = "cone"
                 if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
-                    anchorPlaced = anchorStatus
+                    self.anchorPlaced = anchorStatus
                 }
-                print("anchorPlaced:\t\(anchorPlaced)")
+                print("anchorPlaced:\t\(self.anchorPlaced)")
+                if let hero = Heroes.heroDict[self.heroSelected] {
+                    print(" * selected: \(hero.heroName)")
+                    self.dataController.stageHeroUpdates(name: hero.heroName, id: hero.heroID, map: nil, unlocked: hero.heroUnlocked)
+                }
 			}.padding(10)
 			HStack {
 				Text("Kangaroo").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -45,15 +57,33 @@ struct HeroUIView: View {
 				Image.init(systemName: "hare").scaleEffect(2)
 			}.contentShape(Rectangle()).onTapGesture {
 				print("kangaroo seleced")
-                heroSelected = "kang"
+                self.heroSelected = "kang"
                 if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
-                    anchorPlaced = anchorStatus
+                    self.anchorPlaced = anchorStatus
                 }
-                print("anchorPlaced:\t\(anchorPlaced)")
+                print("anchorPlaced:\t\(self.anchorPlaced)")
+                if let hero = Heroes.heroDict[self.heroSelected] {
+                    print(" * selected: \(hero.heroName)")
+                    self.dataController.stageHeroUpdates(name: hero.heroName, id: hero.heroID, map: nil, unlocked: hero.heroUnlocked)
+                }
 			}.padding(10)
 		}
 		.navigationBarTitle(Text("Guards"), displayMode: .inline)
 	}
+    
+    func selectHero(hero: Hero) -> Bool {
+        let heroUnlocked: Bool = true
+        if heroUnlocked {
+            print("hero unlocked")
+//            heroSelected = heroName
+//            dataController.stageHeroUpdates(name: heroName, id: nil, map: nil, unlocked: heroUnlocked)
+            return true
+        } else {
+            print("hero unavailable, please purchase, or restore your purchases")
+            return false
+        }
+    }
+
 }
 
 struct HeroUIView_Previews: PreviewProvider {
