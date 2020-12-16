@@ -10,6 +10,7 @@ import RealityKit
 import ARKit
 
 struct ARDisplayView: View {
+    
 	let arViewContainer: ARViewContainer
 	@State private var anchorPlaced: Bool = false
     @State private var heroSelected: String = "none"
@@ -19,9 +20,11 @@ struct ARDisplayView: View {
     @State private var showButtons: Bool = true
     private let roomArray = ["room1", "room2", "room3"]
     let heroes: Heroes = Heroes()
+//    let actionButton: ActionButtonView
 
 	init() {
 		self.arViewContainer = ARViewContainer()
+//        self.actionButton = ActionButtonView()
 	}
 
     var body: some View {
@@ -45,42 +48,40 @@ struct ARDisplayView: View {
                 }
                 else if value.translation.height < -100 {
                     print(" - swiped up")
-                    showButtons = true
+                    withAnimation{
+                        showButtons = true
+                    }
                 }
                 else if value.translation.height > 100 {
                     print(" - swiped down")
-                    showButtons = false
+                    withAnimation{
+                        showButtons = false
+                    }
                 }
             }))
-			VStack {
-				Spacer()
-				HStack {
-					ZStack {
-                        if showButtons {
-                            Circle()
-                                .frame(width: 60, height: 60, alignment: .center)
-                                .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
-                                .foregroundColor(.black)
-                                .onTapGesture {
-                                    self.placeHero(position: arViewContainer.arView.center, object: heroSelected)
-                                }
-                            Text(buttonText()).foregroundColor(.white)
-                        }
-					}
-					Spacer()
-                    NavigationLink(destination: HeroUIView(heroSelected: $heroSelected, anchorPlaced: $anchorPlaced, heroes: heroes)) {
-						ZStack {
-                            if showButtons {
+            VStack {
+                Spacer()
+                if showButtons {
+                    HStack{
+                        ActionButtonView(arDisplayView: self, arViewContainer: arViewContainer, anchorPlaced: $anchorPlaced)
+                            .onTapGesture {
+                                self.placeHero(position: arViewContainer.arView.center, object: heroSelected)
+                            }/*.transition(.move(edge: .bottom))*/
+                        Spacer()
+                        NavigationLink(destination: HeroUIView(heroSelected: $heroSelected, anchorPlaced: $anchorPlaced, heroes: heroes)) {
+                            ZStack {
                                 Circle()
                                     .frame(width: 60, height: 60, alignment: .center)
                                     .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
                                     .foregroundColor(.black)
                                 Text(heroSelected).foregroundColor(.white)
+                                
                             }
-						}
-					}
-				}
-			}
+                        }
+                    }.transition(.move(edge: .bottom))
+                    
+                }
+            }
         }
     }
     

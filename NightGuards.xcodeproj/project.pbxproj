@@ -11,6 +11,7 @@
 		D048D1C725855DAC00C9A376 /* HeroImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1C625855DAC00C9A376 /* HeroImpl.swift */; };
 		D048D1CC25855FF500C9A376 /* HeroFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1CB25855FF500C9A376 /* HeroFactory.swift */; };
 		D048D1D82587055600C9A376 /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1D72587055600C9A376 /* ARViewContainer.swift */; };
+		D099BEA7258AB17E004A671B /* ActionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D099BEA6258AB17E004A671B /* ActionButtonView.swift */; };
 		D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */ = {isa = PBXBuildFile; fileRef = D0CBB5722579D964005BD4F8 /* Cone.reality */; };
 		D0D246AD25884A00008910BE /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0D246AB25884A00008910BE /* DataModel.xcdatamodeld */; };
 		D0D246E0258943C6008910BE /* DataPersistController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D246DF258943C6008910BE /* DataPersistController.swift */; };
@@ -51,6 +52,7 @@
 		D048D1C625855DAC00C9A376 /* HeroImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroImpl.swift; sourceTree = "<group>"; };
 		D048D1CB25855FF500C9A376 /* HeroFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroFactory.swift; sourceTree = "<group>"; };
 		D048D1D72587055600C9A376 /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
+		D099BEA6258AB17E004A671B /* ActionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonView.swift; sourceTree = "<group>"; };
 		D0CBB5722579D964005BD4F8 /* Cone.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone.reality; sourceTree = "<group>"; };
 		D0D246AC25884A00008910BE /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		D0D246DF258943C6008910BE /* DataPersistController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersistController.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				D048D1D72587055600C9A376 /* ARViewContainer.swift */,
 				EFF97F08256F13700022E1A5 /* HeroUIView.swift */,
 				EFFAB52D2565D7E5008FDDF4 /* SettingsUIView.swift */,
+				D099BEA6258AB17E004A671B /* ActionButtonView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 				EFFAB4FB2565ACA4008FDDF4 /* ContentView.swift in Sources */,
 				EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */,
 				EF5D66C7257EEC22003E0A36 /* SharedUserSelections.swift in Sources */,
+				D099BEA7258AB17E004A671B /* ActionButtonView.swift in Sources */,
 				EFFAB4F92565ACA4008FDDF4 /* AppDelegate.swift in Sources */,
 				EFFAB5292565CC23008FDDF4 /* ARDisplayView.swift in Sources */,
 				EFFAB4FD2565ACA4008FDDF4 /* Experience.rcproject in Sources */,
