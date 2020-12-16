@@ -22,8 +22,10 @@ class DataPersistController {
     init() {
         self.loadData()
         print(" - loaded CoreData, entity count:\t\(fetchedHeros.count)")
-        print(" - first entry:\n\(fetchedHeros[0].debugDescription)")
-        print(" - first name:\n\(fetchedHeros[0].heroName)")
+        if fetchedHeros.count >= 1 {
+            print(" - first entry:\n\(fetchedHeros[0].debugDescription)")
+            print(" - first name:\n\(fetchedHeros[0].heroName)")
+        }
     }
     
     func stageHeroUpdates(name: String, id: UUID, map: String?, unlocked: Bool?) {

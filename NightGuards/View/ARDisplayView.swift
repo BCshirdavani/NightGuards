@@ -14,6 +14,9 @@ struct ARDisplayView: View {
 	@State private var anchorPlaced: Bool = false
     @State private var heroSelected: String = "none"
     @State private var camStringStat: String = ""
+    @State private var roomName: String = "r1"
+    @State private var roomIndex: Int = 0
+    private let roomArray = ["room1", "room2", "room3"]
     let heroes: Heroes = Heroes()
 
 	init() {
@@ -25,7 +28,27 @@ struct ARDisplayView: View {
             arViewContainer.onTapGesture {
                 setCamStatus()
                 print(" - cam tracking state:\t\(camStringStat)")
-            }
+            }.gesture(DragGesture(minimumDistance: 5.0, coordinateSpace: .local).onEnded({ (value) in
+                print("width: \(value.translation.width), height: \(value.translation.height)")
+                if value.translation.width < -100 {
+                    print(" - swiped left")
+                    roomIndex -= 1
+                    switchRoom()
+                    print(roomName)
+                }
+                else if value.translation.width > 100 {
+                    print(" - swiped right")
+                    roomIndex += 1
+                    switchRoom()
+                    print(roomName)
+                }
+                else if value.translation.height < -100 {
+                    print(" - swiped up")
+                }
+                else if value.translation.height > 100 {
+                    print(" - swiped down")
+                }
+            }))
 			VStack {
 				Spacer()
 				HStack {
@@ -51,7 +74,18 @@ struct ARDisplayView: View {
 					}
 				}
 			}
-		}
+        }
+    }
+    
+    func switchRoom(){
+        let roomCount = roomArray.count
+        var newIndex: Int
+        if roomIndex >= 0 {
+            newIndex = roomIndex % roomCount
+        } else {
+            newIndex = (roomIndex % roomCount + roomCount) % roomCount
+        }
+        roomName = roomArray[newIndex]
     }
     
     func placeHero(position: CGPoint, object: String) {
