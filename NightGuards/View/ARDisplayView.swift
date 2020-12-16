@@ -15,16 +15,14 @@ struct ARDisplayView: View {
 	@State private var anchorPlaced: Bool = false
     @State private var heroSelected: String = "none"
     @State private var camStringStat: String = ""
-    @State private var roomName: String = "r1"
+    @State private var roomName: String = "alpha"
     @State private var roomIndex: Int = 0
     @State private var showButtons: Bool = true
-    private let roomArray = ["room1", "room2", "room3"]
+    private let roomArray = ["alpha", "bravo", "charlie"]
     let heroes: Heroes = Heroes()
-//    let actionButton: ActionButtonView
 
 	init() {
 		self.arViewContainer = ARViewContainer()
-//        self.actionButton = ActionButtonView()
 	}
 
     var body: some View {
@@ -60,6 +58,11 @@ struct ARDisplayView: View {
                 }
             }))
             VStack {
+                HStack {
+                    Image.init(systemName: "bed.double.fill").padding([.leading, .top], 5.0)
+                    Text("Loc: \(roomName)").padding([.top], 5.0)
+                    Spacer()
+                }
                 Spacer()
                 if showButtons {
                     HStack{

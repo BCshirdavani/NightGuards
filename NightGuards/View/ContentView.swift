@@ -12,7 +12,7 @@ struct ContentView : View {
 	var body: some View {
 		NavigationView {
 			ZStack {
-				ARDisplayView().edgesIgnoringSafeArea(.all)
+				ARDisplayView().edgesIgnoringSafeArea(.bottom)
 			}.navigationBarTitle(Text("Night Guards"), displayMode: .inline)
 			.navigationBarItems(trailing: NavigationLink(
 									destination: SettingsUIView(),
