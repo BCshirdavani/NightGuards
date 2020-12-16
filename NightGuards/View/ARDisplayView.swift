@@ -16,6 +16,7 @@ struct ARDisplayView: View {
     @State private var camStringStat: String = ""
     @State private var roomName: String = "r1"
     @State private var roomIndex: Int = 0
+    @State private var showButtons: Bool = true
     private let roomArray = ["room1", "room2", "room3"]
     let heroes: Heroes = Heroes()
 
@@ -44,32 +45,38 @@ struct ARDisplayView: View {
                 }
                 else if value.translation.height < -100 {
                     print(" - swiped up")
+                    showButtons = true
                 }
                 else if value.translation.height > 100 {
                     print(" - swiped down")
+                    showButtons = false
                 }
             }))
 			VStack {
 				Spacer()
 				HStack {
 					ZStack {
-						Circle()
-							.frame(width: 60, height: 60, alignment: .center)
-							.padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
-							.foregroundColor(.black)
-                            .onTapGesture {
-                                self.placeHero(position: arViewContainer.arView.center, object: heroSelected)
-                            }
-						Text(buttonText()).foregroundColor(.white)
+                        if showButtons {
+                            Circle()
+                                .frame(width: 60, height: 60, alignment: .center)
+                                .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
+                                .foregroundColor(.black)
+                                .onTapGesture {
+                                    self.placeHero(position: arViewContainer.arView.center, object: heroSelected)
+                                }
+                            Text(buttonText()).foregroundColor(.white)
+                        }
 					}
 					Spacer()
                     NavigationLink(destination: HeroUIView(heroSelected: $heroSelected, anchorPlaced: $anchorPlaced, heroes: heroes)) {
 						ZStack {
-							Circle()
-								.frame(width: 60, height: 60, alignment: .center)
-								.padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
-								.foregroundColor(.black)
-							Text(heroSelected).foregroundColor(.white)
+                            if showButtons {
+                                Circle()
+                                    .frame(width: 60, height: 60, alignment: .center)
+                                    .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
+                                    .foregroundColor(.black)
+                                Text(heroSelected).foregroundColor(.white)
+                            }
 						}
 					}
 				}
