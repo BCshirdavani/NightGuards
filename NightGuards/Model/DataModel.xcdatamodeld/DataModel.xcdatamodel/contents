@@ -4,6 +4,11 @@
         <attribute name="heroName" attributeType="String"/>
         <attribute name="mapName" optional="YES" attributeType="String"/>
         <attribute name="unlocked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="heroName"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <elements>
         <element name="HeroEntity" positionX="-63" positionY="-18" width="128" height="74"/>

@@ -11,12 +11,14 @@ import CoreData
 struct HeroUIView: View {
     @Binding var heroSelected: String
     @Binding var anchorPlaced: Bool
+    @Binding var mapName: String
     var dataController: DataPersistController = DataPersistController()
     let heroes: Heroes
     
-    init(heroSelected: Binding<String>, anchorPlaced: Binding<Bool>, heroes: Heroes) {
+    init(heroSelected: Binding<String>, anchorPlaced: Binding<Bool>, heroes: Heroes, mapName: Binding<String>) {
         _heroSelected = heroSelected
         _anchorPlaced = anchorPlaced
+        _mapName = mapName
         self.heroes = heroes
     }
     
@@ -34,6 +36,9 @@ struct HeroUIView: View {
                     anchorPlaced = anchorStatus
                 }
                 print("anchorPlaced:\t\(anchorPlaced)")
+                if let hero = Heroes.heroDict[self.heroSelected] {
+                    print(" * selected: \(hero.heroName)")
+                }
 			}.padding(10)
 			HStack {
 				Text("Cone").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -48,7 +53,6 @@ struct HeroUIView: View {
                 print("anchorPlaced:\t\(self.anchorPlaced)")
                 if let hero = Heroes.heroDict[self.heroSelected] {
                     print(" * selected: \(hero.heroName)")
-                    self.dataController.stageHeroUpdates(name: hero.heroName, id: hero.heroID, map: nil, unlocked: hero.heroUnlocked)
                 }
 			}.padding(10)
 			HStack {
@@ -64,7 +68,6 @@ struct HeroUIView: View {
                 print("anchorPlaced:\t\(self.anchorPlaced)")
                 if let hero = Heroes.heroDict[self.heroSelected] {
                     print(" * selected: \(hero.heroName)")
-                    self.dataController.stageHeroUpdates(name: hero.heroName, id: hero.heroID, map: nil, unlocked: hero.heroUnlocked)
                 }
 			}.padding(10)
 		}
@@ -75,8 +78,6 @@ struct HeroUIView: View {
         let heroUnlocked: Bool = true
         if heroUnlocked {
             print("hero unlocked")
-//            heroSelected = heroName
-//            dataController.stageHeroUpdates(name: heroName, id: nil, map: nil, unlocked: heroUnlocked)
             return true
         } else {
             print("hero unavailable, please purchase, or restore your purchases")

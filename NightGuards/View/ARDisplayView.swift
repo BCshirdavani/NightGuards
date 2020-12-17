@@ -15,11 +15,12 @@ struct ARDisplayView: View {
 	@State private var anchorPlaced: Bool = false
     @State private var heroSelected: String = "none"
     @State private var camStringStat: String = ""
-    @State private var roomName: String = "alpha"
+    @State private var mapName: String = "alpha"
     @State private var roomIndex: Int = 0
     @State private var showButtons: Bool = true
     private let roomArray = ["alpha", "bravo", "charlie"]
     let heroes: Heroes = Heroes()
+    let dataController: DataPersistController = DataPersistController()
 
 	init() {
 		self.arViewContainer = ARViewContainer()
@@ -36,13 +37,13 @@ struct ARDisplayView: View {
                     print(" - swiped left")
                     roomIndex -= 1
                     switchRoom()
-                    print(roomName)
+                    print(mapName)
                 }
                 else if value.translation.width > 100 {
                     print(" - swiped right")
                     roomIndex += 1
                     switchRoom()
-                    print(roomName)
+                    print(mapName)
                 }
                 else if value.translation.height < -100 {
                     print(" - swiped up")
@@ -60,7 +61,7 @@ struct ARDisplayView: View {
             VStack {
                 HStack {
                     Image.init(systemName: "bed.double.fill").padding([.leading, .top], 5.0)
-                    Text("Loc: \(roomName)").padding([.top], 5.0)
+                    Text("Loc: \(mapName)").padding([.top], 5.0)
                     Spacer()
                 }
                 Spacer()
@@ -69,9 +70,10 @@ struct ARDisplayView: View {
                         ActionButtonView(arDisplayView: self, arViewContainer: arViewContainer, anchorPlaced: $anchorPlaced)
                             .onTapGesture {
                                 self.placeHero(position: arViewContainer.arView.center, object: heroSelected)
-                            }/*.transition(.move(edge: .bottom))*/
+                                self.dataController.stageHeroUpdates(name: heroSelected, map: mapName, unlocked: true)
+                            }
                         Spacer()
-                        NavigationLink(destination: HeroUIView(heroSelected: $heroSelected, anchorPlaced: $anchorPlaced, heroes: heroes)) {
+                        NavigationLink(destination: HeroUIView(heroSelected: $heroSelected, anchorPlaced: $anchorPlaced, heroes: heroes, mapName: $mapName)) {
                             ZStack {
                                 Circle()
                                     .frame(width: 60, height: 60, alignment: .center)
@@ -96,7 +98,7 @@ struct ARDisplayView: View {
         } else {
             newIndex = (roomIndex % roomCount + roomCount) % roomCount
         }
-        roomName = roomArray[newIndex]
+        mapName = roomArray[newIndex]
     }
     
     func placeHero(position: CGPoint, object: String) {
