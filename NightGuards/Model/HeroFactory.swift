@@ -25,10 +25,23 @@ struct HeroFactory {
         }
     }
     
+    func buildHeroModelNode(heroName: String) -> SCNNode {
+        switch heroName {
+        case "ball":
+            let ball = makeBallNode()
+            return ball
+        case "cone":
+            let cone = makeConeNode()
+            return cone
+        default:
+            let box = makeBoxNode()
+            return box
+        }
+    }
+    
     func makeBallEntity() -> ModelEntity {
         // this ball has no physics, and adds successive balls properly, without
         // fucking with old anchors
-        print(" - makeBallEntity()")
         let mesh = MeshResource.generateSphere(radius: 0.03)
         let color = UIColor.red
         let material = SimpleMaterial(color: color, isMetallic: false)
@@ -39,7 +52,6 @@ struct HeroFactory {
     func makeBoxEntity() -> ModelEntity {
         // this ball has no physics, and adds successive balls properly, without
         // fucking with old anchors
-        print(" - makeBallEntity()")
         let mesh = MeshResource.generateBox(size: 0.03)
         let color = UIColor.blue
         let material = SimpleMaterial(color: color, isMetallic: false)
@@ -53,6 +65,30 @@ struct HeroFactory {
         // when adding new anchor model
         let entity = try! Entity.load(named: "Cone2")
         return entity
+    }
+    
+    func makeBallNode() -> SCNNode {
+        let sphere = SCNSphere(radius: 0.1)
+        let sphereNode = SCNNode()
+        sphereNode.position.y += Float(sphere.radius)
+        sphereNode.geometry = sphere
+        return sphereNode
+    }
+    
+    func makeConeNode() -> SCNNode {
+        let cone = SCNCone(topRadius: 0.001, bottomRadius: 0.1, height: 0.2)
+        let coneNode = SCNNode()
+        coneNode.position.y += Float(cone.bottomRadius)
+        coneNode.geometry = cone
+        return coneNode
+    }
+    
+    func makeBoxNode() -> SCNNode {
+        let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.01)
+        let boxNode = SCNNode()
+        boxNode.position.y += Float(box.length)
+        boxNode.geometry = box
+        return boxNode
     }
     
     func makeHeroID(heroName: String) -> UUID {

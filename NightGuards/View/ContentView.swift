@@ -11,6 +11,7 @@ import RealityKit
 struct ContentView : View {
 	var body: some View {
 		NavigationView {
+            
 			ZStack {
 				ARDisplayView().edgesIgnoringSafeArea(.bottom)
 			}.navigationBarTitle(Text("Night Guards"), displayMode: .inline)
@@ -18,7 +19,6 @@ struct ContentView : View {
 									destination: SettingsUIView(),
 									label: {
 										Image(systemName: "gear")
-											.foregroundColor(.black)
 											.font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
 									}))
 		}

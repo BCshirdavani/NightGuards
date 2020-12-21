@@ -10,7 +10,6 @@ import UIKit
 import ARKit
 import RealityKit
 
-
 final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     var arView: ARView
     let heroFactory = HeroFactory()
@@ -19,7 +18,8 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     let dataController: DataPersistController = DataPersistController()
     var worldMapURL: URL = {
         do {
-            return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("worldMapURL")
+            return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                .appendingPathComponent("worldMapURL")
         } catch {
             fatalError("Error getting world map URL from document directory.")
         }
@@ -33,6 +33,7 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     func makeUIView(context: Context) -> ARView {
         configAR()
         arView.session.delegate = self
+        loadMap()
         return arView
     }
     
@@ -42,7 +43,7 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     
     func updateUIView(_ uiView: ARView, context: Context) {}
     
-    func configAR() {
+    func configAR(with worldMap: ARWorldMap? = nil) {
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = [.horizontal, .vertical]
         configuration.worldAlignment = .gravityAndHeading
@@ -57,6 +58,21 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
         } else {
             print(" * does NOT support scene reconstruction")
             self.arView.debugOptions = [.showWorldOrigin, .showAnchorOrigins, .showFeaturePoints]
+        }
+        if let worldMap = worldMap {
+            configuration.initialWorldMap = worldMap
+            print("Found saved world map.")
+        } else {
+            print("Move camera around to map your surrounding space.")
+        }
+        print(" - world map anchor count: \(worldMap?.anchors.count)")
+        if worldMap?.anchors.count ?? 0 > 1 {
+            for anchor in worldMap!.anchors {
+                print("anchor: \(anchor.name) at \(anchor.transform.columns.3)")
+                if anchor.name != nil {
+                    addModelToExistingAnchor(anchor: anchor)
+                }
+            }
         }
         self.arView.session.run(configuration, options: options)
     }
@@ -75,12 +91,89 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
             print("....no rayCast result....")
             return
         }
-        let anchor = AnchorEntity(world: rayCast.worldTransform)
-        
+        let arAnchor = ARAnchor(name: object, transform: rayCast.worldTransform)
+        let anchorEntity = AnchorEntity(anchor: arAnchor)
         if let model = Heroes.heroDict[object]?.model {
-            Heroes.heroDict[object]?.modifyAnchor(newAnchor: anchor)
-            anchor.addChild(model)
-            arView.scene.addAnchor(anchor)
+            Heroes.heroDict[object]?.modifyAnchorEntity(newAnchor: anchorEntity)
+            Heroes.heroDict[object]?.modifyArAnchor(newAnchor: arAnchor)
+            anchorEntity.addChild(model)
+            arView.scene.addAnchor(anchorEntity)
+            arView.session.getCurrentWorldMap { (map, error) in
+                if map != nil {
+                    var arrIndex: Int = 0
+                    // check to not add duplicate anchors
+                    for anchor in map!.anchors {
+                        if anchor.name == object {
+                            map!.anchors.remove(at: arrIndex)
+                            self.arView.session.remove(anchor: anchor)
+                        }
+                        arrIndex += 1
+                    }
+                }
+            }
+            arView.session.add(anchor: arAnchor)
+        }
+        saveMap()
+    }
+    
+    // MARK: map persistence
+    func archive(worldMap: ARWorldMap) throws {
+        let data = try NSKeyedArchiver.archivedData(withRootObject: worldMap, requiringSecureCoding: true)
+        try data.write(to: self.worldMapURL, options: [.atomic])
+    }
+    
+   func saveMap() {
+        print(" - save pressed")
+        arView.session.getCurrentWorldMap { (worldMap, error) in
+            guard let worldMap = worldMap else {
+                print("Error getting current world map.")
+                return
+            }
+            do {
+                try self.archive(worldMap: worldMap)
+                DispatchQueue.main.async {
+                    print("World map is saved.")
+                }
+            } catch {
+                fatalError("Error saving world map: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    func retrieveWorldMapData(from url: URL) -> Data? {
+        do {
+            print(" - woldMapURL:\t\(worldMapURL.absoluteURL)")
+            print(" - data description")
+            try print(Data(contentsOf: self.worldMapURL).description)
+            return try Data(contentsOf: self.worldMapURL)
+        } catch {
+            print("Error retrieving world map data.")
+            return nil
+        }
+    }
+
+    func unarchive(worldMapData data: Data) -> ARWorldMap? {
+        guard let unarchievedObject = ((try? NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data)) as ARWorldMap??),
+              let worldMap = unarchievedObject else { return nil }
+        print(" - unarchieved map object:")
+        print(unarchievedObject!)
+        return worldMap
+    }
+    
+    func loadMap() {
+        print(" - load pressed")
+        guard let worldMapData = retrieveWorldMapData(from: worldMapURL),
+              let worldMap = unarchive(worldMapData: worldMapData) else { return }
+        print(" - world map:")
+        print(worldMap)
+        configAR(with: worldMap)
+    }
+    
+    func addModelToExistingAnchor(anchor: ARAnchor) {
+        let anchorEntity = AnchorEntity(anchor: anchor)
+        if let model = Heroes.heroDict[anchor.name!]?.model{
+            anchorEntity.addChild(model)
+            arView.scene.addAnchor(anchorEntity)
         }
     }
         

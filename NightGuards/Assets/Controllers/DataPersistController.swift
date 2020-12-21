@@ -20,12 +20,12 @@ class DataPersistController {
     init() {
         self.loadData()
         print(" - loaded CoreData, entity count:\t\(fetchedHeros.count)")
-        printLoadedData()
+//        printLoadedData()
     }
     
     func stageHeroUpdates(name: String, map: String?, unlocked: Bool?) {
         loadData()
-        print(fetchedHeros)
+//        print(fetchedHeros)
         var heroExists: Bool = false
         var oldHero: HeroEntity = HeroEntity()
         fetchedHeros.makeIterator().forEach { (entity) in
@@ -54,7 +54,6 @@ class DataPersistController {
     }
     
     func saveChanges() {
-        print(" - calling saveChanges()")
         printLoadedData()
         do {
             try context.save()
@@ -64,7 +63,6 @@ class DataPersistController {
     }
     
     func loadData() {
-        print(" - calling loadData()")
         let request: NSFetchRequest<HeroEntity> = HeroEntity.fetchRequest()
         do {
             fetchedHeros = try context.fetch(request)

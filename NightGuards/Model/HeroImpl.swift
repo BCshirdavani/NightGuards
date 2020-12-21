@@ -10,13 +10,19 @@ import ARKit
 import RealityKit
 
 protocol Hero {
-    var anchorEntity: AnchorEntity? { get }
+    var anchorEntity: AnchorEntity? { get set }
+    var arAnchor: ARAnchor? { get set }
     var model: Entity { get }
+    var modelNode: SCNNode { get set }
     var heroFactory: HeroFactory { get }
     var heroMapURLString: String? { get set }
 }
 
 final class HeroImpl: Hero {
+    var modelNode: SCNNode
+    
+    var arAnchor: ARAnchor?
+    
     var heroFactory: HeroFactory = HeroFactory()
     
     var anchorEntity: AnchorEntity?
@@ -33,12 +39,16 @@ final class HeroImpl: Hero {
     
     init(heroName: String) {
         model = heroFactory.buildHeroModel(heroName: heroName)
+        modelNode = heroFactory.buildHeroModelNode(heroName: heroName)
         heroID = heroFactory.makeHeroID(heroName: heroName)
         self.heroName = heroName
     }
     
-    func modifyAnchor(newAnchor: AnchorEntity) {
+    func modifyAnchorEntity(newAnchor: AnchorEntity) {
         anchorEntity = newAnchor
+    }
+    func modifyArAnchor(newAnchor: ARAnchor) {
+        arAnchor = newAnchor
     }
     
     func removeAnchor() {
@@ -46,12 +56,9 @@ final class HeroImpl: Hero {
     }
     
     func isPlaced() -> Bool {
-        print(" - anchorEntity...")
         if anchorEntity != nil {
-            print(anchorEntity.debugDescription)
             return true
         } else {
-            print(anchorEntity.debugDescription)
             return false
         }
     }
