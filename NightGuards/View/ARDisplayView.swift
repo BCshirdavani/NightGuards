@@ -30,29 +30,21 @@ struct ARDisplayView: View {
 		ZStack {
             arViewContainer.onTapGesture {
                 setCamStatus()
-                print(" - cam tracking state:\t\(camStringStat)")
             }.gesture(DragGesture(minimumDistance: 5.0, coordinateSpace: .local).onEnded({ (value) in
-                print("width: \(value.translation.width), height: \(value.translation.height)")
                 if value.translation.width < -100 {
-                    print(" - swiped left")
                     roomIndex -= 1
                     switchRoom()
-                    print(mapName)
                 }
                 else if value.translation.width > 100 {
-                    print(" - swiped right")
                     roomIndex += 1
                     switchRoom()
-                    print(mapName)
                 }
                 else if value.translation.height < -100 {
-                    print(" - swiped up")
                     withAnimation{
                         showButtons = true
                     }
                 }
                 else if value.translation.height > 100 {
-                    print(" - swiped down")
                     withAnimation{
                         showButtons = false
                     }
@@ -70,7 +62,6 @@ struct ARDisplayView: View {
                         ActionButtonView(arDisplayView: self, arViewContainer: arViewContainer, anchorPlaced: $anchorPlaced)
                             .onTapGesture {
                                 self.placeHero(position: arViewContainer.arView.center, object: heroSelected)
-                                self.dataController.stageHeroUpdates(name: heroSelected, map: mapName, unlocked: true)
                             }
                         Spacer()
                         NavigationLink(destination: HeroUIView(heroSelected: $heroSelected, anchorPlaced: $anchorPlaced, heroes: heroes, mapName: $mapName)) {
@@ -102,9 +93,12 @@ struct ARDisplayView: View {
     }
     
     func placeHero(position: CGPoint, object: String) {
-        arViewContainer.castRaySimple(point: position, object: object)
-        if let hero = Heroes.heroDict[object] {
-            anchorPlaced = hero.isPlaced()
+        if object != "none" {
+            arViewContainer.castRaySimple(point: position, object: object)
+            if let hero = Heroes.heroDict[object] {
+                anchorPlaced = hero.isPlaced()
+            }
+            self.dataController.stageHeroUpdates(name: heroSelected, map: mapName, unlocked: true)
         }
     }
 

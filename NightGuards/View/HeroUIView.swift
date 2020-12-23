@@ -30,14 +30,9 @@ struct HeroUIView: View {
 				Spacer()
 				Image.init(systemName: "circle.fill").scaleEffect(2)
 			}.contentShape(Rectangle()).onTapGesture {
-				print("ball selected")
                 heroSelected = "ball"
                 if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
                     anchorPlaced = anchorStatus
-                }
-                print("anchorPlaced:\t\(anchorPlaced)")
-                if let hero = Heroes.heroDict[self.heroSelected] {
-                    print(" * selected: \(hero.heroName)")
                 }
 			}.padding(10)
 			HStack {
@@ -45,14 +40,9 @@ struct HeroUIView: View {
 				Spacer()
 				Image.init(systemName: "arrowtriangle.up").scaleEffect(2)
 			}.contentShape(Rectangle()).onTapGesture {
-				print("cone seleced")
                 self.heroSelected = "cone"
                 if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
                     self.anchorPlaced = anchorStatus
-                }
-                print("anchorPlaced:\t\(self.anchorPlaced)")
-                if let hero = Heroes.heroDict[self.heroSelected] {
-                    print(" * selected: \(hero.heroName)")
                 }
 			}.padding(10)
 			HStack {
@@ -60,14 +50,9 @@ struct HeroUIView: View {
 				Spacer()
 				Image.init(systemName: "hare").scaleEffect(2)
 			}.contentShape(Rectangle()).onTapGesture {
-				print("kangaroo seleced")
                 self.heroSelected = "kang"
                 if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
                     self.anchorPlaced = anchorStatus
-                }
-                print("anchorPlaced:\t\(self.anchorPlaced)")
-                if let hero = Heroes.heroDict[self.heroSelected] {
-                    print(" * selected: \(hero.heroName)")
                 }
 			}.padding(10)
 		}

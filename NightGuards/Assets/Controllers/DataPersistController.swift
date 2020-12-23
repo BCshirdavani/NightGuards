@@ -14,20 +14,14 @@ class DataPersistController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var fetchedHeros = [HeroEntity]()
     
-    var stagedUpdateDict = [String: HeroEntity]()
-    var stagedUpdateSet = Set<HeroEntity>()
-    
     init() {
         self.loadData()
-        print(" - loaded CoreData, entity count:\t\(fetchedHeros.count)")
-//        printLoadedData()
     }
     
     func stageHeroUpdates(name: String, map: String?, unlocked: Bool?) {
         loadData()
-//        print(fetchedHeros)
         var heroExists: Bool = false
-        var oldHero: HeroEntity = HeroEntity()
+        var oldHero: HeroEntity = HeroEntity.init(context: self.context)
         fetchedHeros.makeIterator().forEach { (entity) in
             if entity.heroName == name {
                 heroExists = true
@@ -35,7 +29,8 @@ class DataPersistController {
             }
         }
         if !heroExists {
-            let newHero = HeroEntity(context: self.context)
+            context.delete(oldHero)
+            let newHero = HeroEntity.init(context: self.context)
             newHero.heroName = name
             if let newMapName = map {
                 newHero.mapName = newMapName
@@ -43,8 +38,6 @@ class DataPersistController {
             if let unlockedStatus = unlocked {
                 newHero.unlocked = unlockedStatus
             }
-            stagedUpdateDict[name] = newHero
-            stagedUpdateSet.insert(newHero)
         } else {
             oldHero.heroName = name
             oldHero.mapName = map
@@ -54,7 +47,6 @@ class DataPersistController {
     }
     
     func saveChanges() {
-        printLoadedData()
         do {
             try context.save()
         } catch {
@@ -66,6 +58,13 @@ class DataPersistController {
         let request: NSFetchRequest<HeroEntity> = HeroEntity.fetchRequest()
         do {
             fetchedHeros = try context.fetch(request)
+            let fetchedHeroesFiltered = fetchedHeros.filter { (entity) -> Bool in
+                if entity.heroName == nil {
+                    context.delete(entity)
+                }
+                return entity.heroName != nil
+            }
+            fetchedHeros = fetchedHeroesFiltered
         } catch {
             print("error fetching data from context \(error)")
         }
@@ -77,6 +76,7 @@ class DataPersistController {
             fetchedHeros.makeIterator().forEach { (entity) in
                 print(" - name: \(entity.heroName), map: \(entity.mapName), unlocked: \(entity.unlocked)")
             }
+            print("------------------------------")
         }
     }
 

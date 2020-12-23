@@ -21,6 +21,7 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
             return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
                 .appendingPathComponent("worldMapURL")
         } catch {
+            print("failed to initialize worldMapURL")
             fatalError("Error getting world map URL from document directory.")
         }
     }()
@@ -61,14 +62,12 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
         }
         if let worldMap = worldMap {
             configuration.initialWorldMap = worldMap
-            print("Found saved world map.")
         } else {
             print("Move camera around to map your surrounding space.")
         }
-        print(" - world map anchor count: \(worldMap?.anchors.count)")
+        
         if worldMap?.anchors.count ?? 0 > 1 {
             for anchor in worldMap!.anchors {
-                print("anchor: \(anchor.name) at \(anchor.transform.columns.3)")
                 if anchor.name != nil {
                     addModelToExistingAnchor(anchor: anchor)
                 }
@@ -78,7 +77,6 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     }
     
     func castRaySimple(point: CGPoint, object: String) {
-        print(" - castRaySimple()")
         let tapLocation: CGPoint = point
         let estimatedPlane: ARRaycastQuery.Target = .existingPlaneGeometry
         let alignment: ARRaycastQuery.TargetAlignment = .any
@@ -100,15 +98,13 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
             arView.scene.addAnchor(anchorEntity)
             arView.session.getCurrentWorldMap { (map, error) in
                 if map != nil {
-                    var arrIndex: Int = 0
-                    // check to not add duplicate anchors
-                    for anchor in map!.anchors {
-                        if anchor.name == object {
-                            map!.anchors.remove(at: arrIndex)
-                            self.arView.session.remove(anchor: anchor)
-                        }
-                        arrIndex += 1
-                    }
+                    // filter out duplicate anchors
+                    let filteredMapAnchors = map?.anchors.filter({ (anchor) -> Bool in
+                        // TODO: confirm arView.session anchors do not accululate into memory leak
+//                        self.arView.session.remove(anchor: anchor)
+                        return anchor.name != object
+                    })
+                    map?.anchors = filteredMapAnchors ?? []
                 }
             }
             arView.session.add(anchor: arAnchor)
@@ -123,7 +119,6 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     }
     
    func saveMap() {
-        print(" - save pressed")
         arView.session.getCurrentWorldMap { (worldMap, error) in
             guard let worldMap = worldMap else {
                 print("Error getting current world map.")
@@ -131,9 +126,6 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
             }
             do {
                 try self.archive(worldMap: worldMap)
-                DispatchQueue.main.async {
-                    print("World map is saved.")
-                }
             } catch {
                 fatalError("Error saving world map: \(error.localizedDescription)")
             }
@@ -142,8 +134,6 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
 
     func retrieveWorldMapData(from url: URL) -> Data? {
         do {
-            print(" - woldMapURL:\t\(worldMapURL.absoluteURL)")
-            print(" - data description")
             try print(Data(contentsOf: self.worldMapURL).description)
             return try Data(contentsOf: self.worldMapURL)
         } catch {
@@ -155,16 +145,12 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     func unarchive(worldMapData data: Data) -> ARWorldMap? {
         guard let unarchievedObject = ((try? NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data)) as ARWorldMap??),
               let worldMap = unarchievedObject else { return nil }
-        print(" - unarchieved map object:")
-        print(unarchievedObject!)
         return worldMap
     }
     
     func loadMap() {
-        print(" - load pressed")
         guard let worldMapData = retrieveWorldMapData(from: worldMapURL),
               let worldMap = unarchive(worldMapData: worldMapData) else { return }
-        print(" - world map:")
         print(worldMap)
         configAR(with: worldMap)
     }

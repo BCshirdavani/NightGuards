@@ -68,11 +68,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func saveContext () {
         let context = persistentContainer.viewContext
-        print(" ...saving to CoreData...")
         if context.hasChanges {
             do {
-                print(context.debugDescription)
-                print(context.description)
                 try context.save()
             } catch {
                 let nserror = error as NSError
