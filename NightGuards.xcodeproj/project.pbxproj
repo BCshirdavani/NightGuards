@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D02F49F12595481600312F19 /* DataPersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F49F02595481600312F19 /* DataPersistenceController.swift */; };
 		D048D1BF257C345C00C9A376 /* Cone2.reality in Resources */ = {isa = PBXBuildFile; fileRef = D048D1BE257C345C00C9A376 /* Cone2.reality */; };
 		D048D1C725855DAC00C9A376 /* HeroImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1C625855DAC00C9A376 /* HeroImpl.swift */; };
 		D048D1CC25855FF500C9A376 /* HeroFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1CB25855FF500C9A376 /* HeroFactory.swift */; };
@@ -14,7 +15,6 @@
 		D099BEA7258AB17E004A671B /* ActionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D099BEA6258AB17E004A671B /* ActionButtonView.swift */; };
 		D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */ = {isa = PBXBuildFile; fileRef = D0CBB5722579D964005BD4F8 /* Cone.reality */; };
 		D0D246AD25884A00008910BE /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0D246AB25884A00008910BE /* DataModel.xcdatamodeld */; };
-		D0D246E0258943C6008910BE /* DataPersistController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D246DF258943C6008910BE /* DataPersistController.swift */; };
 		EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A7254256C916200DE9837 /* LaunchScreen.swift */; };
 		EF5D66C2257EE8BC003E0A36 /* kangaroo.usdz in Resources */ = {isa = PBXBuildFile; fileRef = EF5D66C1257EE8BC003E0A36 /* kangaroo.usdz */; };
 		EF5D66C7257EEC22003E0A36 /* SharedUserSelections.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5D66C6257EEC22003E0A36 /* SharedUserSelections.swift */; };
@@ -48,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D02F49F02595481600312F19 /* DataPersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersistenceController.swift; sourceTree = "<group>"; };
 		D048D1BE257C345C00C9A376 /* Cone2.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone2.reality; sourceTree = "<group>"; };
 		D048D1C625855DAC00C9A376 /* HeroImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroImpl.swift; sourceTree = "<group>"; };
 		D048D1CB25855FF500C9A376 /* HeroFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroFactory.swift; sourceTree = "<group>"; };
@@ -55,7 +56,6 @@
 		D099BEA6258AB17E004A671B /* ActionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonView.swift; sourceTree = "<group>"; };
 		D0CBB5722579D964005BD4F8 /* Cone.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone.reality; sourceTree = "<group>"; };
 		D0D246AC25884A00008910BE /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
-		D0D246DF258943C6008910BE /* DataPersistController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersistController.swift; sourceTree = "<group>"; };
 		EF0A7254256C916200DE9837 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		EF5D66C1257EE8BC003E0A36 /* kangaroo.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = kangaroo.usdz; sourceTree = "<group>"; };
 		EF5D66C6257EEC22003E0A36 /* SharedUserSelections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUserSelections.swift; sourceTree = "<group>"; };
@@ -102,6 +102,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D02F49EF259547E100312F19 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D02F49F02595481600312F19 /* DataPersistenceController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		D048D1DC258705A700C9A376 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,21 +137,12 @@
 		D048D1DE258705B300C9A376 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				D0D246DB2589439B008910BE /* Controllers */,
 				EF5D66C1257EE8BC003E0A36 /* kangaroo.usdz */,
 				D048D1BE257C345C00C9A376 /* Cone2.reality */,
 				D0CBB5722579D964005BD4F8 /* Cone.reality */,
 				EFFAB4FC2565ACA4008FDDF4 /* Experience.rcproject */,
 			);
 			path = Assets;
-			sourceTree = "<group>";
-		};
-		D0D246DB2589439B008910BE /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				D0D246DF258943C6008910BE /* DataPersistController.swift */,
-			);
-			path = Controllers;
 			sourceTree = "<group>";
 		};
 		EFFAB4EC2565ACA4008FDDF4 = {
@@ -170,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				D048D1DE258705B300C9A376 /* Assets */,
+				D02F49EF259547E100312F19 /* Controllers */,
 				D048D1DD258705AE00C9A376 /* View */,
 				D048D1DC258705A700C9A376 /* Model */,
 				EFFAB4F82565ACA4008FDDF4 /* AppDelegate.swift */,
@@ -341,8 +341,8 @@
 			files = (
 				EFF97F09256F13700022E1A5 /* HeroUIView.swift in Sources */,
 				EFFAB52E2565D7E6008FDDF4 /* SettingsUIView.swift in Sources */,
+				D02F49F12595481600312F19 /* DataPersistenceController.swift in Sources */,
 				D048D1D82587055600C9A376 /* ARViewContainer.swift in Sources */,
-				D0D246E0258943C6008910BE /* DataPersistController.swift in Sources */,
 				D0D246AD25884A00008910BE /* DataModel.xcdatamodeld in Sources */,
 				EFFAB4FB2565ACA4008FDDF4 /* ContentView.swift in Sources */,
 				EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */,

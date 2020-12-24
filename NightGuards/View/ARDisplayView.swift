@@ -64,6 +64,17 @@ struct ARDisplayView: View {
                                 self.placeHero(position: arViewContainer.arView.center, object: heroSelected)
                             }
                         Spacer()
+                        ZStack{
+                            Circle()
+                                .frame(width: 60, height: 60, alignment: .center)
+                                .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
+                                .foregroundColor(.pink)
+                                .onTapGesture {
+                                    resetMap()
+                                }
+                            Text("reset").foregroundColor(.white)
+                        }
+                        Spacer()
                         NavigationLink(destination: HeroUIView(heroSelected: $heroSelected, anchorPlaced: $anchorPlaced, heroes: heroes, mapName: $mapName)) {
                             ZStack {
                                 Circle()
@@ -79,6 +90,15 @@ struct ARDisplayView: View {
                 }
             }
         }
+    }
+    
+    func resetMap() {
+        Heroes.heroDict.keys.forEach { (hero) in
+            Heroes.heroDict[hero]?.heroMapURLString = nil
+            dataController.stageHeroUpdates(name: hero, map: nil, unlocked: true)
+        }
+        arViewContainer.killAllARAnchors()
+        arViewContainer.configAR()
     }
     
     func switchRoom(){

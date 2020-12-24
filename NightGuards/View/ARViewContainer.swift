@@ -63,7 +63,7 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
         if let worldMap = worldMap {
             configuration.initialWorldMap = worldMap
         } else {
-            print("Move camera around to map your surrounding space.")
+            print(" --- Move camera around to map your surrounding space.")
         }
         
         if worldMap?.anchors.count ?? 0 > 1 {
@@ -108,6 +108,19 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
                 }
             }
             arView.session.add(anchor: arAnchor)
+        }
+        saveMap()
+    }
+    
+    func killAllARAnchors() {
+        arView.session.getCurrentWorldMap { (map, error) in
+            if map != nil {
+                let filteredMapAnchors = map?.anchors.filter({ (anchor) -> Bool in
+                        self.arView.session.remove(anchor: anchor)
+                    return !anchor.isMember(of: ARAnchor.self)
+                })
+                map?.anchors = filteredMapAnchors ?? []
+            }
         }
         saveMap()
     }

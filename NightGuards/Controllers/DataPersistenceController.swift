@@ -1,8 +1,8 @@
 //
-//  DataPersistController.swift
+//  DataPersistenceController.swift
 //  NightGuards
 //
-//  Created by shiMac on 12/15/20.
+//  Created by shiMac on 12/24/20.
 //
 
 import Foundation
@@ -58,6 +58,7 @@ class DataPersistController {
         let request: NSFetchRequest<HeroEntity> = HeroEntity.fetchRequest()
         do {
             fetchedHeros = try context.fetch(request)
+            printLoadedData()
             let fetchedHeroesFiltered = fetchedHeros.filter { (entity) -> Bool in
                 if entity.heroName == nil {
                     context.delete(entity)
