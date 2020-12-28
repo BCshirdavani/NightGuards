@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func applicationDidEnterBackground(_ application: UIApplication) {
 		// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+        self.saveContext()
 	}
 
 	func applicationWillEnterForeground(_ application: UIApplication) {
@@ -69,6 +70,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
+            print(" - updated objects:\n\(context.updatedObjects)")
+            print(" - value for keypath heroName:\n\(context.value(forKeyPath: "heroName"))")
+            print(" - value for key heroName:\n\(context.value(forKey: "heroName"))")
             do {
                 try context.save()
             } catch {

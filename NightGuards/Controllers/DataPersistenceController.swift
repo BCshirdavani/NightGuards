@@ -43,6 +43,7 @@ class DataPersistController {
             oldHero.mapName = map
             oldHero.unlocked = unlocked ?? true
         }
+        // clean unprocessed changes or inserts, remove nil's
         self.saveChanges()
     }
     

@@ -55,6 +55,16 @@ struct HeroUIView: View {
                     self.anchorPlaced = anchorStatus
                 }
 			}.padding(10)
+            HStack {
+                Text("Robot").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                Spacer()
+                Image.init(systemName: "figure.walk").scaleEffect(2)
+            }.contentShape(Rectangle()).onTapGesture {
+                self.heroSelected = "robo"
+                if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
+                    self.anchorPlaced = anchorStatus
+                }
+            }.padding(10)
 		}
 		.navigationBarTitle(Text("Guards"), displayMode: .inline)
 	}

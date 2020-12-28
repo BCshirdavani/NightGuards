@@ -79,6 +79,7 @@ final class Heroes {
         Heroes.heroDict["ball"] = HeroImpl(heroName: "ball")
         Heroes.heroDict["cone"] = HeroImpl(heroName: "cone")
         Heroes.heroDict["kang"] = HeroImpl(heroName: "kang")
+        Heroes.heroDict["robo"] = HeroImpl(heroName: "robo")
     }
 }
 

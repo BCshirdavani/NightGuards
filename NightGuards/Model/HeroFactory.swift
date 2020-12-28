@@ -19,6 +19,9 @@ struct HeroFactory {
         case "cone":
             let cone = makeConeModel()
             return cone
+        case "robo":
+            let cone = makeRoboModel()
+            return cone
         default:
             let box = makeBoxEntity()
             return box
@@ -64,6 +67,11 @@ struct HeroFactory {
         // TODO: the cone scene has physics, and erroneously updates old anchor planes
         // when adding new anchor model
         let entity = try! Entity.load(named: "Cone2")
+        return entity
+    }
+    
+    func makeRoboModel() -> Entity {
+        let entity = try! Entity.load(named: "Robot")
         return entity
     }
     

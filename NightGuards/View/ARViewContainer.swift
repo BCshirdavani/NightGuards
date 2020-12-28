@@ -10,8 +10,11 @@ import UIKit
 import ARKit
 import RealityKit
 
+// TODO: abort ARView + entity, use ARSCNView + SCNNodes with SceneKit
+// TODO: OR...make reality files with obj converted models in it, to be compatible with realityKit
 final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     var arView: ARView
+//    var arScnView: ARSCNView
     let heroFactory = HeroFactory()
     let heroes: Heroes = Heroes()
     let session: ARSession
@@ -28,6 +31,7 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     
     override init() {
         arView = ARView(frame: .zero)
+//        arScnView = ARSCNView(frame: .zero)
         session = ARSession()
     }
     
