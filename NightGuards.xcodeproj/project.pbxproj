@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		D02F49F12595481600312F19 /* DataPersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F49F02595481600312F19 /* DataPersistenceController.swift */; };
-		D02F4A4D25956BC500312F19 /* Trump.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = D02F4A4C25956BC500312F19 /* Trump.rcproject */; };
 		D02F4A52259931EB00312F19 /* Robot.reality in Resources */ = {isa = PBXBuildFile; fileRef = D02F4A51259931EB00312F19 /* Robot.reality */; };
 		D048D1BF257C345C00C9A376 /* Cone2.reality in Resources */ = {isa = PBXBuildFile; fileRef = D048D1BE257C345C00C9A376 /* Cone2.reality */; };
 		D048D1C725855DAC00C9A376 /* HeroImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1C625855DAC00C9A376 /* HeroImpl.swift */; };
 		D048D1CC25855FF500C9A376 /* HeroFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1CB25855FF500C9A376 /* HeroFactory.swift */; };
 		D048D1D82587055600C9A376 /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1D72587055600C9A376 /* ARViewContainer.swift */; };
 		D099BEA7258AB17E004A671B /* ActionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D099BEA6258AB17E004A671B /* ActionButtonView.swift */; };
+		D09EF398259D242A00B150E9 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = D09EF397259D242A00B150E9 /* art.scnassets */; };
 		D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */ = {isa = PBXBuildFile; fileRef = D0CBB5722579D964005BD4F8 /* Cone.reality */; };
 		D0D246AD25884A00008910BE /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0D246AB25884A00008910BE /* DataModel.xcdatamodeld */; };
 		EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A7254256C916200DE9837 /* LaunchScreen.swift */; };
@@ -51,13 +51,13 @@
 
 /* Begin PBXFileReference section */
 		D02F49F02595481600312F19 /* DataPersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersistenceController.swift; sourceTree = "<group>"; };
-		D02F4A4C25956BC500312F19 /* Trump.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Trump.rcproject; sourceTree = "<group>"; };
 		D02F4A51259931EB00312F19 /* Robot.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Robot.reality; sourceTree = "<group>"; };
 		D048D1BE257C345C00C9A376 /* Cone2.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone2.reality; sourceTree = "<group>"; };
 		D048D1C625855DAC00C9A376 /* HeroImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroImpl.swift; sourceTree = "<group>"; };
 		D048D1CB25855FF500C9A376 /* HeroFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroFactory.swift; sourceTree = "<group>"; };
 		D048D1D72587055600C9A376 /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
 		D099BEA6258AB17E004A671B /* ActionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonView.swift; sourceTree = "<group>"; };
+		D09EF397259D242A00B150E9 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		D0CBB5722579D964005BD4F8 /* Cone.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone.reality; sourceTree = "<group>"; };
 		D0D246AC25884A00008910BE /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		EF0A7254256C916200DE9837 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
@@ -146,7 +146,6 @@
 				D048D1BE257C345C00C9A376 /* Cone2.reality */,
 				D0CBB5722579D964005BD4F8 /* Cone.reality */,
 				EFFAB4FC2565ACA4008FDDF4 /* Experience.rcproject */,
-				D02F4A4C25956BC500312F19 /* Trump.rcproject */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -183,6 +182,7 @@
 				EFFAB5032565ACA5008FDDF4 /* Info.plist */,
 				EFFAB5002565ACA5008FDDF4 /* Preview Content */,
 				EF0A7254256C916200DE9837 /* LaunchScreen.swift */,
+				D09EF397259D242A00B150E9 /* art.scnassets */,
 			);
 			path = NightGuards;
 			sourceTree = "<group>";
@@ -319,6 +319,7 @@
 				D048D1BF257C345C00C9A376 /* Cone2.reality in Resources */,
 				D02F4A52259931EB00312F19 /* Robot.reality in Resources */,
 				EF5D66C2257EE8BC003E0A36 /* kangaroo.usdz in Resources */,
+				D09EF398259D242A00B150E9 /* art.scnassets in Resources */,
 				EFFAB5022565ACA5008FDDF4 /* Preview Assets.xcassets in Resources */,
 				D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */,
 				EFFAB4FF2565ACA5008FDDF4 /* Assets.xcassets in Resources */,
@@ -348,7 +349,6 @@
 			files = (
 				EFF97F09256F13700022E1A5 /* HeroUIView.swift in Sources */,
 				EFFAB52E2565D7E6008FDDF4 /* SettingsUIView.swift in Sources */,
-				D02F4A4D25956BC500312F19 /* Trump.rcproject in Sources */,
 				D02F49F12595481600312F19 /* DataPersistenceController.swift in Sources */,
 				D048D1D82587055600C9A376 /* ARViewContainer.swift in Sources */,
 				D0D246AD25884A00008910BE /* DataModel.xcdatamodeld in Sources */,
