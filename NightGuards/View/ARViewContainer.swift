@@ -10,11 +10,11 @@ import UIKit
 import ARKit
 import RealityKit
 
-// TODO: abort ARView + entity, use ARSCNView + SCNNodes with SceneKit
-// TODO: OR...make reality files with obj converted models in it, to be compatible with realityKit
-final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
-    var arView: ARView
-//    var arScnView: ARSCNView
+final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIViewRepresentable {
+    
+    typealias UIViewType = ARSCNView
+
+    var arScnView: ARSCNView
     let heroFactory = HeroFactory()
     let heroes: Heroes = Heroes()
     let session: ARSession
@@ -30,23 +30,19 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     }()
     
     override init() {
-        arView = ARView(frame: .zero)
-//        arScnView = ARSCNView(frame: .zero)
+        arScnView = ARSCNView(frame: .zero)
         session = ARSession()
     }
     
-    func makeUIView(context: Context) -> ARView {
+    func makeUIView(context: Context) -> ARSCNView {
         configAR()
-        arView.session.delegate = self
+        arScnView.session.delegate = self
+        arScnView.delegate = self
         loadMap()
-        return arView
+        return arScnView
     }
     
-    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
-        print(" - tracking state change:\t\(camera.trackingState)")
-    }
-    
-    func updateUIView(_ uiView: ARView, context: Context) {}
+    func updateUIView(_ uiView: ARSCNView, context: UIViewRepresentableContext<ARViewContainer>) {}
     
     func configAR(with worldMap: ARWorldMap? = nil) {
         let configuration = ARWorldTrackingConfiguration()
@@ -54,15 +50,11 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
         configuration.worldAlignment = .gravityAndHeading
         configuration.environmentTexturing = .automatic
         let options: ARSession.RunOptions = [.stopTrackedRaycasts, .resetTracking, .removeExistingAnchors]
-
+        self.arScnView.debugOptions = [.showWorldOrigin, .showFeaturePoints, /*.renderAsWireframe*/]
         if ARGeoTrackingConfiguration.isSupported {
             print(" * supports scene reconstruction")
-            self.arView.debugOptions = [.showSceneUnderstanding/*, .showAnchorOrigins*/]
-            configuration.sceneReconstruction = [.meshWithClassification]
-            self.arView.environment.sceneUnderstanding.options.insert(.occlusion)
         } else {
             print(" * does NOT support scene reconstruction")
-            self.arView.debugOptions = [.showWorldOrigin, .showAnchorOrigins, .showFeaturePoints]
         }
         if let worldMap = worldMap {
             configuration.initialWorldMap = worldMap
@@ -73,54 +65,78 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
         if worldMap?.anchors.count ?? 0 > 1 {
             for anchor in worldMap!.anchors {
                 if anchor.name != nil {
-                    addModelToExistingAnchor(anchor: anchor)
+                    print(" - anchor found in old map: \(anchor)")
                 }
             }
         }
-        self.arView.session.run(configuration, options: options)
+        self.arScnView.session.run(configuration, options: options)
     }
+    
+    
     
     func castRaySimple(point: CGPoint, object: String) {
         let tapLocation: CGPoint = point
         let estimatedPlane: ARRaycastQuery.Target = .existingPlaneGeometry
         let alignment: ARRaycastQuery.TargetAlignment = .any
-
-        let result: [ARRaycastResult] = arView.raycast(from: tapLocation,
-                                                       allowing: estimatedPlane,
-                                                       alignment: alignment)
-        guard let rayCast: ARRaycastResult = result.first
-        else {
-            print("....no rayCast result....")
-            return
-        }
-        let arAnchor = ARAnchor(name: object, transform: rayCast.worldTransform)
-        let anchorEntity = AnchorEntity(anchor: arAnchor)
-        if let model = Heroes.heroDict[object]?.model {
-            Heroes.heroDict[object]?.modifyAnchorEntity(newAnchor: anchorEntity)
-            Heroes.heroDict[object]?.modifyArAnchor(newAnchor: arAnchor)
-            anchorEntity.addChild(model)
-            arView.scene.addAnchor(anchorEntity)
-            arView.session.getCurrentWorldMap { (map, error) in
-                if map != nil {
-                    // filter out duplicate anchors
-                    let filteredMapAnchors = map?.anchors.filter({ (anchor) -> Bool in
-                        // TODO: confirm arView.session anchors do not accululate into memory leak
-//                        self.arView.session.remove(anchor: anchor)
-                        return anchor.name != object
-                    })
-                    map?.anchors = filteredMapAnchors ?? []
-                }
+        
+        let rayCastQuery = arScnView.raycastQuery(from: tapLocation, allowing: .estimatedPlane, alignment: alignment)
+        var result: [ARRaycastResult]
+        if rayCastQuery != nil {
+            result = arScnView.session.raycast(rayCastQuery!)
+            guard let rayCast: ARRaycastResult = result.first
+            else {
+                print("....no rayCast result....")
+                return
             }
-            arView.session.add(anchor: arAnchor)
+            let arAnchor = ARAnchor(name: object, transform: rayCast.worldTransform)
+            if let modelNode = Heroes.heroDict[object]?.getHeroScnNode() {
+                Heroes.heroDict[object]?.modifyArAnchor(newAnchor: arAnchor)
+                arScnView.session.add(anchor: arAnchor)
+                arScnView.session.getCurrentWorldMap { (map, error) in
+                    if map != nil {
+                        // TODO: filter out duplicate anchors
+                        let filteredMapAnchors = map?.anchors.filter({ (anchor) -> Bool in
+                            // TODO: confirm arView.session anchors do not accululate into memory leak
+                            //                        self.arView.session.remove(anchor: anchor)
+                            return anchor.name != object
+                        })
+                        map?.anchors = filteredMapAnchors ?? []
+                    }
+                }
+                arScnView.session.add(anchor: arAnchor)
+            }
         }
         saveMap()
     }
     
+    // MARK: ARSessionDelegate methods
+    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+        print(" - cam tracking state change:\t\(camera.trackingState)")
+    }
+    
+    func session(_ session: ARSession, didChange geoTrackingStatus: ARGeoTrackingStatus) {
+        print(" - geo tracking status change:\t\(geoTrackingStatus)")
+    }
+    
+    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+        let anchorName = anchors.first?.name
+        print(" - added anchor with name: \(anchorName)")
+    }
+    
+    // MARK: ARSCNViewDelegate method
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        if let chosenHero: HeroImpl = Heroes.heroDict[anchor.name ?? ""] {
+            node.addChildNode(chosenHero.getHeroScnNode())
+        }
+    }
+    
+    
+
     func killAllARAnchors() {
-        arView.session.getCurrentWorldMap { (map, error) in
+        arScnView.session.getCurrentWorldMap { (map, error) in
             if map != nil {
                 let filteredMapAnchors = map?.anchors.filter({ (anchor) -> Bool in
-                        self.arView.session.remove(anchor: anchor)
+                        self.arScnView.session.remove(anchor: anchor)
                     return !anchor.isMember(of: ARAnchor.self)
                 })
                 map?.anchors = filteredMapAnchors ?? []
@@ -136,7 +152,7 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
     }
     
    func saveMap() {
-        arView.session.getCurrentWorldMap { (worldMap, error) in
+    arScnView.session.getCurrentWorldMap { (worldMap, error) in
             guard let worldMap = worldMap else {
                 print("Error getting current world map.")
                 return
@@ -170,14 +186,6 @@ final class ARViewContainer: NSObject, UIViewRepresentable, ARSessionDelegate {
               let worldMap = unarchive(worldMapData: worldMapData) else { return }
         print(worldMap)
         configAR(with: worldMap)
-    }
-    
-    func addModelToExistingAnchor(anchor: ARAnchor) {
-        let anchorEntity = AnchorEntity(anchor: anchor)
-        if let model = Heroes.heroDict[anchor.name!]?.model{
-            anchorEntity.addChild(model)
-            arView.scene.addAnchor(anchorEntity)
-        }
     }
         
 }

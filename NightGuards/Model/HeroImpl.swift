@@ -9,54 +9,40 @@ import Foundation
 import ARKit
 import RealityKit
 
+
+// MARK: protocol interface
 protocol Hero {
-    var anchorEntity: AnchorEntity? { get set }
-    var arAnchor: ARAnchor? { get set }
-    var model: Entity { get }
-    var modelNode: SCNNode { get set }
-    var heroFactory: HeroFactory { get }
+    var arAnchorContainer: AnchorContainer? { get set }
     var heroMapURLString: String? { get set }
+    var heroName: String { get }
 }
 
-final class HeroImpl: Hero {
-    var modelNode: SCNNode
-    
-    var arAnchor: ARAnchor?
-    
-    var heroFactory: HeroFactory = HeroFactory()
-    
-    var anchorEntity: AnchorEntity?
-    
-    var model: Entity
+// MARK: implementation of Hero protocol
+final class HeroImpl: Hero, Codable {
+    var arAnchorContainer: AnchorContainer?
     
     var heroMapURLString: String?
-    
-    let heroID: UUID
-    
-    let heroUnlocked: Bool = true
+        
+    var heroUnlocked: Bool = true
     
     let heroName: String
     
     init(heroName: String) {
-        model = heroFactory.buildHeroModel(heroName: heroName)
-        modelNode = heroFactory.buildHeroModelNode(heroName: heroName)
-        heroID = heroFactory.makeHeroID(heroName: heroName)
         self.heroName = heroName
     }
     
-    func modifyAnchorEntity(newAnchor: AnchorEntity) {
-        anchorEntity = newAnchor
-    }
-    func modifyArAnchor(newAnchor: ARAnchor) {
-        arAnchor = newAnchor
+    func getHeroScnNode() -> SCNNode {
+        let heroFactory: HeroFactory = HeroFactory()
+        let modelNode: SCNNode = heroFactory.buildHeroModelNode(heroName: heroName)
+        return modelNode
     }
     
-    func removeAnchor() {
-        anchorEntity = nil
+    func modifyArAnchor(newAnchor: ARAnchor) {
+        arAnchorContainer = AnchorContainer(anchor: newAnchor)
     }
     
     func isPlaced() -> Bool {
-        if anchorEntity != nil {
+        if arAnchorContainer?.anchor != nil {
             return true
         } else {
             return false
@@ -72,7 +58,45 @@ final class HeroImpl: Hero {
     }
 }
 
-final class Heroes {
+// MARK: ARAnchor wrapper
+class AnchorContainer: Codable {
+    let anchor: ARAnchor
+
+    init(anchor: ARAnchor) {
+        self.anchor = anchor
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let name = try container.decode(String.self, forKey: .name)
+        let transform0 = try container.decode(simd_float4.self, forKey: .transform0)
+        let transform1 = try container.decode(simd_float4.self, forKey: .transform1)
+        let transform2 = try container.decode(simd_float4.self, forKey: .transform2)
+        let transform3 = try container.decode(simd_float4.self, forKey: .transform3)
+        let matrix = simd_float4x4(columns: (transform0, transform1, transform2, transform3))
+        anchor = ARAnchor(name: name, transform: matrix)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(anchor.name, forKey: .name)
+        try container.encode(anchor.transform.columns.0, forKey: .transform0)
+        try container.encode(anchor.transform.columns.1, forKey: .transform1)
+        try container.encode(anchor.transform.columns.2, forKey: .transform2)
+        try container.encode(anchor.transform.columns.3, forKey: .transform3)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case transform0
+        case transform1
+        case transform2
+        case transform3
+    }
+}
+
+// MARK: aggregate singleton that holds all Heroes implemented
+final class Heroes: Codable {
     public static var heroDict = [String : HeroImpl]()
     
     init() {

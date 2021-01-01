@@ -21,9 +21,11 @@ struct ARDisplayView: View {
     private let roomArray = ["alpha", "bravo", "charlie"]
     let heroes: Heroes = Heroes()
     let dataController: DataPersistController = DataPersistController()
+    let arScnView: ARSCNView
 
 	init() {
 		self.arViewContainer = ARViewContainer()
+        self.arScnView = ARSCNView()
 	}
 
     var body: some View {
@@ -61,7 +63,7 @@ struct ARDisplayView: View {
                     HStack{
                         ActionButtonView(arDisplayView: self, arViewContainer: arViewContainer, anchorPlaced: $anchorPlaced)
                             .onTapGesture {
-                                self.placeHero(position: arViewContainer.arView.center, object: heroSelected)
+                                self.placeHero(position: arViewContainer.arScnView.center, object: heroSelected)
                             }
                         Spacer()
                         ZStack{
@@ -118,7 +120,7 @@ struct ARDisplayView: View {
             if let hero = Heroes.heroDict[object] {
                 anchorPlaced = hero.isPlaced()
             }
-            self.dataController.stageHeroUpdates(name: heroSelected, map: mapName, unlocked: true)
+//            self.dataController.stageHeroUpdates(name: heroSelected, map: mapName, unlocked: true)
         }
     }
 
@@ -131,7 +133,7 @@ struct ARDisplayView: View {
     
     // TODO: figure out how to mutate the @State property to update with tracking status
     func setCamStatus() {
-        if let trackState = arViewContainer.arView.session.currentFrame?.camera.trackingState {
+        if let trackState = arViewContainer.arScnView.session.currentFrame?.camera.trackingState {
             switch trackState {
             case .normal:
                 camStringStat = "normal"
