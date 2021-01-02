@@ -17,7 +17,6 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
     var arScnView: ARSCNView
     let heroFactory = HeroFactory()
     let heroes: Heroes = Heroes()
-    let dataController: DataPersistController = DataPersistController()
     var worldMapURL: URL = {
         do {
             return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
@@ -27,7 +26,6 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
             fatalError("Error getting world map URL from document directory.")
         }
     }()
-    var currentMapCopy: ARWorldMap?
     let coachingOverlay: ARCoachingOverlayView = ARCoachingOverlayView()
     
     override init() {
@@ -139,7 +137,6 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         let anchorName = anchors.first?.name
-//        print(" - added anchor with name: \(anchorName)")
     }
     
     // MARK: ARSCNViewDelegate method
@@ -161,6 +158,10 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
                 map?.anchors = filteredMapAnchors ?? []
             }
         }
+        Heroes.heroDict.values.forEach { (hero) in
+            hero.arAnchorContainer = nil
+            hero.heroMapURLString = nil
+        }
         saveMap()
     }
     
@@ -170,17 +171,18 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         try data.write(to: self.worldMapURL, options: [.atomic])
     }
     
-   func saveMap() {
-    arScnView.session.getCurrentWorldMap { (worldMap, error) in
-            guard let worldMap = worldMap else {
-                print("Error getting current world map.")
-                return
-            }
-            do {
-                self.currentMapCopy = worldMap
-                try self.archive(worldMap: worldMap)
-            } catch {
-                fatalError("Error saving world map: \(error.localizedDescription)")
+    func saveMap() {
+        DispatchQueue.main.async {
+            self.arScnView.session.getCurrentWorldMap { (worldMap, error) in
+                guard let worldMap = worldMap else {
+                    print("Error getting current world map.")
+                    return
+                }
+                do {
+                    try self.archive(worldMap: worldMap)
+                } catch {
+                    fatalError("Error saving world map: \(error.localizedDescription)")
+                }
             }
         }
     }
@@ -205,7 +207,6 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         guard let worldMapData = retrieveWorldMapData(from: worldMapURL),
               let worldMap = unarchive(worldMapData: worldMapData) else { return }
         print(worldMap)
-        currentMapCopy = worldMap
         configAR(with: worldMap)
     }
         

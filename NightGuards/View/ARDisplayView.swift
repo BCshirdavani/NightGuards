@@ -20,7 +20,6 @@ struct ARDisplayView: View {
     @State private var showButtons: Bool = true
     private let roomArray = ["alpha", "bravo", "charlie"]
     let heroes: Heroes = Heroes()
-    let dataController: DataPersistController = DataPersistController()
     let arScnView: ARSCNView
 
 	init() {
@@ -99,6 +98,7 @@ struct ARDisplayView: View {
     func resetMap() {
         arViewContainer.killAllARAnchors()
         arViewContainer.configAR()
+        anchorPlaced = false
     }
     
     func switchRoom(){
@@ -118,8 +118,8 @@ struct ARDisplayView: View {
             if let hero = Heroes.heroDict[object] {
                 anchorPlaced = hero.isPlaced()
             }
-//            self.dataController.stageHeroUpdates(name: heroSelected, map: mapName, unlocked: true)
         }
+        arViewContainer.saveMap()
     }
 
 	func buttonText() -> String {

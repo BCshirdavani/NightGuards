@@ -6,13 +6,11 @@
 //
 
 import SwiftUI
-import CoreData
 
 struct HeroUIView: View {
     @Binding var heroSelected: String
     @Binding var anchorPlaced: Bool
     @Binding var mapName: String
-    var dataController: DataPersistController = DataPersistController()
     let heroes: Heroes
     
     init(heroSelected: Binding<String>, anchorPlaced: Binding<Bool>, heroes: Heroes, mapName: Binding<String>) {

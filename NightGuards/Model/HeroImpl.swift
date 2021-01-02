@@ -104,7 +104,21 @@ final class Heroes: Codable {
         Heroes.heroDict["cone"] = HeroImpl(heroName: "cone")
         Heroes.heroDict["kang"] = HeroImpl(heroName: "kang")
         Heroes.heroDict["robo"] = HeroImpl(heroName: "robo")
+        load()
     }
+    
+    static func save() {
+        UserDefaults.standard.set(try? PropertyListEncoder().encode(Heroes.heroDict), forKey:"heroDict")
+    }
+    
+    func load() {
+        if let data = UserDefaults.standard.value(forKey:"heroDict") as? Data {
+            let loadedHeroDict = try? PropertyListDecoder().decode([String : HeroImpl].self, from: data)
+            Heroes.heroDict = loadedHeroDict ?? Heroes.heroDict
+        }
+    }
+    
+    
 }
 
 
