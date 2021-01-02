@@ -51,7 +51,9 @@ struct ARDisplayView: View {
                         showButtons = false
                     }
                 }
-            }))
+            })).onDisappear {
+                arViewContainer.saveMap()
+            }
             VStack {
                 HStack {
                     Image.init(systemName: "bed.double.fill").padding([.leading, .top], 5.0)

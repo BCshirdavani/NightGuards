@@ -17,7 +17,6 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
     var arScnView: ARSCNView
     let heroFactory = HeroFactory()
     let heroes: Heroes = Heroes()
-    let session: ARSession
     let dataController: DataPersistController = DataPersistController()
     var worldMapURL: URL = {
         do {
@@ -28,10 +27,13 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
             fatalError("Error getting world map URL from document directory.")
         }
     }()
+    var currentMapCopy: ARWorldMap?
     
     override init() {
         arScnView = ARSCNView(frame: .zero)
-        session = ARSession()
+        arScnView.autoenablesDefaultLighting = true
+        arScnView.rendersMotionBlur = true
+        arScnView.automaticallyUpdatesLighting = true
     }
     
     func makeUIView(context: Context) -> ARSCNView {
@@ -45,31 +47,43 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
     func updateUIView(_ uiView: ARSCNView, context: UIViewRepresentableContext<ARViewContainer>) {}
     
     func configAR(with worldMap: ARWorldMap? = nil) {
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = [.horizontal, .vertical]
-        configuration.worldAlignment = .gravityAndHeading
-        configuration.environmentTexturing = .automatic
+        let configuration = self.setupARConfig(with: worldMap)
         let options: ARSession.RunOptions = [.stopTrackedRaycasts, .resetTracking, .removeExistingAnchors]
         self.arScnView.debugOptions = [.showWorldOrigin, .showFeaturePoints, /*.renderAsWireframe*/]
+        self.arScnView.session.run(configuration, options: options)
+    }
+    
+    func setupARConfig(with worldMap: ARWorldMap? = nil) -> ARWorldTrackingConfiguration {
+        let config = ARWorldTrackingConfiguration()
+        config.planeDetection = [.horizontal, .vertical]
+        config.worldAlignment = .gravityAndHeading
+        config.environmentTexturing = .automatic
         if ARGeoTrackingConfiguration.isSupported {
-            print(" * supports scene reconstruction")
+            print(" * geo tracking supported")
         } else {
-            print(" * does NOT support scene reconstruction")
+            print(" * geo tracking NOT supported")
+        }
+        if ARWorldTrackingConfiguration.supportsSceneReconstruction(.meshWithClassification) {
+            print(" * scene reconstruction supported")
+        } else {
+            print(" * scene reconstruction NOT supported")
+        }
+        if ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth) {
+            print(" * scene depth supported")
+        } else {
+            print(" * scene depth NOT supported")
+        }
+        if ARWorldTrackingConfiguration.supportsFrameSemantics(.personSegmentationWithDepth) {
+            print(" * person segmentation w/ depth supported")
+        } else {
+            print(" * person segmentation w/ depth NOT supported")
         }
         if let worldMap = worldMap {
-            configuration.initialWorldMap = worldMap
+            config.initialWorldMap = worldMap
         } else {
             print(" --- Move camera around to map your surrounding space.")
         }
-        
-        if worldMap?.anchors.count ?? 0 > 1 {
-            for anchor in worldMap!.anchors {
-                if anchor.name != nil {
-                    print(" - anchor found in old map: \(anchor)")
-                }
-            }
-        }
-        self.arScnView.session.run(configuration, options: options)
+        return config
     }
     
     
@@ -88,26 +102,29 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
                 print("....no rayCast result....")
                 return
             }
-            let arAnchor = ARAnchor(name: object, transform: rayCast.worldTransform)
-            if let modelNode = Heroes.heroDict[object]?.getHeroScnNode() {
-                Heroes.heroDict[object]?.modifyArAnchor(newAnchor: arAnchor)
-                arScnView.session.add(anchor: arAnchor)
-                arScnView.session.getCurrentWorldMap { (map, error) in
-                    if map != nil {
-                        // TODO: filter out duplicate anchors
-                        let filteredMapAnchors = map?.anchors.filter({ (anchor) -> Bool in
-                            // TODO: confirm arView.session anchors do not accululate into memory leak
-                            //                        self.arView.session.remove(anchor: anchor)
-                            return anchor.name != object
-                        })
-                        map?.anchors = filteredMapAnchors ?? []
-                    }
-                }
-                arScnView.session.add(anchor: arAnchor)
+            // remove old anchor
+            if let oldAnchor = Heroes.heroDict[object]?.arAnchorContainer?.anchor {
+                arScnView.session.remove(anchor: oldAnchor)
             }
+            // add new anchor
+            let arAnchor = ARAnchor(name: object, transform: rayCast.worldTransform)
+            Heroes.heroDict[object]?.modifyArAnchor(newAnchor: arAnchor)
+            arScnView.session.add(anchor: arAnchor)
+            arScnView.session.getCurrentWorldMap { (map, error) in
+                if map != nil {
+                    map?.anchors.filter({ (mapAnchor) -> Bool in
+                        return mapAnchor.name != object
+                    })
+                    map?.anchors.append(arAnchor)
+                }
+            }
+            //            saveMap()
         }
-        saveMap()
     }
+    
+    
+    
+    
     
     // MARK: ARSessionDelegate methods
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
@@ -158,6 +175,7 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
                 return
             }
             do {
+                self.currentMapCopy = worldMap
                 try self.archive(worldMap: worldMap)
             } catch {
                 fatalError("Error saving world map: \(error.localizedDescription)")
@@ -185,7 +203,10 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         guard let worldMapData = retrieveWorldMapData(from: worldMapURL),
               let worldMap = unarchive(worldMapData: worldMapData) else { return }
         print(worldMap)
+        currentMapCopy = worldMap
         configAR(with: worldMap)
     }
         
 }
+
+
