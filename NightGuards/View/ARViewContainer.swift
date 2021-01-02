@@ -28,6 +28,7 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         }
     }()
     var currentMapCopy: ARWorldMap?
+    let coachingOverlay: ARCoachingOverlayView = ARCoachingOverlayView()
     
     override init() {
         arScnView = ARSCNView(frame: .zero)
@@ -41,6 +42,7 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         arScnView.session.delegate = self
         arScnView.delegate = self
         loadMap()
+        setupCoachingOverlay()
         return arScnView
     }
     
@@ -137,7 +139,7 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         let anchorName = anchors.first?.name
-        print(" - added anchor with name: \(anchorName)")
+//        print(" - added anchor with name: \(anchorName)")
     }
     
     // MARK: ARSCNViewDelegate method
@@ -210,3 +212,60 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
 }
 
 
+
+/// - Tag: CoachingOverlayViewDelegate
+extension ARViewContainer: ARCoachingOverlayViewDelegate {
+    
+    /// - Tag: HideUI
+    func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        print(" ~ coaching view will activate")
+    }
+    
+    /// - Tag: PresentUI
+    func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        print(" ~ coaching view will activate")
+//        upperControlsView.isHidden = false
+    }
+
+    /// - Tag: StartOver
+    func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView) {
+        print(" ~ coaching view will activate")
+        self.killAllARAnchors()
+        self.configAR()
+    }
+
+    func setupCoachingOverlay() {
+        // Set up coaching view
+        coachingOverlay.session = arScnView.session
+        coachingOverlay.delegate = self
+        
+        coachingOverlay.translatesAutoresizingMaskIntoConstraints = false
+        arScnView.addSubview(coachingOverlay)
+        
+        NSLayoutConstraint.activate([
+            coachingOverlay.centerXAnchor.constraint(equalTo: arScnView.centerXAnchor),
+            coachingOverlay.centerYAnchor.constraint(equalTo: arScnView.centerYAnchor),
+            coachingOverlay.widthAnchor.constraint(equalTo: arScnView.widthAnchor),
+            coachingOverlay.heightAnchor.constraint(equalTo: arScnView.heightAnchor)
+            ])
+        
+        setActivatesAutomatically()
+        
+        // Most of the virtual objects in this sample require a horizontal surface,
+        // therefore coach the user to find a horizontal plane.
+        setGoal()
+    }
+    
+    /// - Tag: CoachingActivatesAutomatically
+    func setActivatesAutomatically() {
+//        coachingOverlay.activatesAutomatically = true
+        print(" ~ coaching overlay active?: \(coachingOverlay.isActive)")
+        coachingOverlay.setActive(true, animated: true)
+        print(" ~ coaching overlay active?: \(coachingOverlay.isActive)")
+    }
+
+    /// - Tag: CoachingGoal
+    func setGoal() {
+        coachingOverlay.goal = .horizontalPlane
+    }
+}

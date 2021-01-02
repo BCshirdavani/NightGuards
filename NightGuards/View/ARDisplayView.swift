@@ -97,10 +97,6 @@ struct ARDisplayView: View {
     }
     
     func resetMap() {
-        Heroes.heroDict.keys.forEach { (hero) in
-            Heroes.heroDict[hero]?.heroMapURLString = nil
-            dataController.stageHeroUpdates(name: hero, map: nil, unlocked: true)
-        }
         arViewContainer.killAllARAnchors()
         arViewContainer.configAR()
     }
