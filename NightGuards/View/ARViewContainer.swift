@@ -27,7 +27,7 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         }
     }()
     let coachingOverlay: ARCoachingOverlayView = ARCoachingOverlayView()
-    var animators: Dictionary<String, Animator>?
+    var animators: Dictionary<String, Animator> = Dictionary<String, Animator>()
     
     override init() {
         arScnView = ARSCNView(frame: .zero)
@@ -121,9 +121,22 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         }
     }
     
+    func detectObjectTap(point: CGPoint) {
+        let hits = self.arScnView.hitTest(point, options: nil)
+        if let tappedNode : SCNNode = hits.first?.node {
+            print(" ~ tappedNode name: \(tappedNode.name)")
+            print(" ~ tappedNode parent name: \(tappedNode.parent?.name)")
+            if tappedNode.name?.contains("trump") ?? false || tappedNode.parent?.name?.contains("trump") ?? false {
+                if let trumpAnimations = animators["trump"] {
+                    trumpAnimations.playAnimation(key: "twerk")
+                }
+            }
+        }
+    }
+    
     func updateAnimatorForHero(heroIn: HeroImpl, node: SCNNode) {
         let animator = Animator(heroToAnimate: heroIn, sceneNode: node, arSceneView: arScnView)
-        animators?.updateValue(animator, forKey: heroIn.heroName)
+        animators.updateValue(animator, forKey: heroIn.heroName)
     }
     
     

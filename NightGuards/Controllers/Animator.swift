@@ -10,7 +10,7 @@ import UIKit
 import SceneKit
 import ARKit
 
-struct Animator {
+class Animator {
     
     let subject: Hero
     let node: SCNNode
@@ -27,7 +27,7 @@ struct Animator {
     
     
     
-    mutating func loadAnimations () {
+    func loadAnimations () {
         // Load the character in the idle animation
         let idleScene = SCNScene(named: "art.scnassets/TrumpAnimations/IdleFixed.dae")!
         
@@ -39,7 +39,6 @@ struct Animator {
         }
         
         // Set up some properties
-//        node.position = SCNVector3(0, 0, 0)
         trumpNode.scale = SCNVector3(0.001, 0.001, 0.001)
         node.addChildNode(trumpNode)
         
@@ -47,11 +46,14 @@ struct Animator {
         sceneView.scene.rootNode.addChildNode(node)
         
         // Load all the DAE animations
-        loadAnimation(withKey: "crunch", sceneName: "art.scnassets/TrumpAnimations/biCrunch", animationIdentifier: "biCrunch-1")
-        loadAnimation(withKey: "jump", sceneName: "art.scnassets/TrumpAnimations/jump", animationIdentifier: "jump-1")
+        DispatchQueue.main.async {
+            self.loadAnimation(withKey: "crunch", sceneName: "art.scnassets/TrumpAnimations/biCrunch", animationIdentifier: "biCrunch-1")
+            self.loadAnimation(withKey: "jump", sceneName: "art.scnassets/TrumpAnimations/jump", animationIdentifier: "jump-1")
+            self.loadAnimation(withKey: "twerk", sceneName: "art.scnassets/TrumpAnimations/Twerk", animationIdentifier: "Twerk-1")
+        }
     }
     
-    mutating func loadAnimation(withKey: String, sceneName:String, animationIdentifier:String) {
+    func loadAnimation(withKey: String, sceneName:String, animationIdentifier:String) {
         let sceneURL = Bundle.main.url(forResource: sceneName, withExtension: "dae")
         let sceneSource = SCNSceneSource(url: sceneURL!, options: nil)
         
