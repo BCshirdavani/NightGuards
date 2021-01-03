@@ -19,10 +19,24 @@ struct HeroFactory {
         case "cone":
             let cone = makeConeNode()
             return cone
+        case "trump":
+            let tump = getTrumpNodes()
+            return tump
         default:
             let box = makeBoxNode()
             return box
         }
+    }
+    
+    func getTrumpNodes() -> SCNNode {
+        let node = SCNNode()
+        node.name = "trump"
+//        let scene = SCNScene(named: "art.scnassets/TrumpAnimations/IdleFixed.dae")
+//        let nodeArray = scene!.rootNode.childNodes
+//        for childNode in nodeArray {
+//          node.addChildNode(childNode as SCNNode)
+//        }
+        return node
     }
     
     func makeBallNode() -> SCNNode {
@@ -62,6 +76,10 @@ struct HeroFactory {
             return uuid
         case "cone":
             let idString = "CONEE1F8-C36C-495A-93FC-0C247A3E6E5F"
+            let uuid = UUID(uuidString: idString) ?? defaultID
+            return uuid
+        case "trump":
+            let idString = "TRUMP1F8-C36C-495A-93FC-0C247A3E6E5F"
             let uuid = UUID(uuidString: idString) ?? defaultID
             return uuid
         default:

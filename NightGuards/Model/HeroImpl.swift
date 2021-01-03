@@ -15,10 +15,13 @@ protocol Hero {
     var arAnchorContainer: AnchorContainer? { get set }
     var heroMapURLString: String? { get set }
     var heroName: String { get }
+    var shouldAnimate: Bool { get }
 }
 
 // MARK: implementation of Hero protocol
 final class HeroImpl: Hero, Codable {
+    var shouldAnimate: Bool
+    
     var arAnchorContainer: AnchorContainer?
     
     var heroMapURLString: String?
@@ -29,6 +32,11 @@ final class HeroImpl: Hero, Codable {
     
     init(heroName: String) {
         self.heroName = heroName
+        if heroName == "trump" {
+            shouldAnimate = true
+        } else {
+            shouldAnimate = false
+        }
     }
     
     func getHeroScnNode() -> SCNNode {
@@ -103,7 +111,7 @@ final class Heroes: Codable {
         Heroes.heroDict["ball"] = HeroImpl(heroName: "ball")
         Heroes.heroDict["cone"] = HeroImpl(heroName: "cone")
         Heroes.heroDict["kang"] = HeroImpl(heroName: "kang")
-        Heroes.heroDict["robo"] = HeroImpl(heroName: "robo")
+        Heroes.heroDict["trump"] = HeroImpl(heroName: "trump")
         load()
     }
     

@@ -27,6 +27,7 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         }
     }()
     let coachingOverlay: ARCoachingOverlayView = ARCoachingOverlayView()
+    var animators: Dictionary<String, Animator>?
     
     override init() {
         arScnView = ARSCNView(frame: .zero)
@@ -90,7 +91,6 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
     
     func castRaySimple(point: CGPoint, object: String) {
         let tapLocation: CGPoint = point
-        let estimatedPlane: ARRaycastQuery.Target = .existingPlaneGeometry
         let alignment: ARRaycastQuery.TargetAlignment = .any
         
         let rayCastQuery = arScnView.raycastQuery(from: tapLocation, allowing: .estimatedPlane, alignment: alignment)
@@ -118,11 +118,13 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
                     map?.anchors.append(arAnchor)
                 }
             }
-            //            saveMap()
         }
     }
     
-    
+    func updateAnimatorForHero(heroIn: HeroImpl, node: SCNNode) {
+        let animator = Animator(heroToAnimate: heroIn, sceneNode: node, arSceneView: arScnView)
+        animators?.updateValue(animator, forKey: heroIn.heroName)
+    }
     
     
     
@@ -140,11 +142,22 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
     }
     
     // MARK: ARSCNViewDelegate method
+    // TODO: call updateAnimatorForHero here, but using the appropriate hero for the node
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if let chosenHero: HeroImpl = Heroes.heroDict[anchor.name ?? ""] {
+            self.arScnView.scene.rootNode.childNodes.forEach { (thisNode) in
+                if thisNode.name == anchor.name {
+                    thisNode.removeFromParentNode()
+                }
+            }
+            node.name = anchor.name
             node.addChildNode(chosenHero.getHeroScnNode())
+            if anchor.name == "trump" {
+                self.updateAnimatorForHero(heroIn: chosenHero, node: node)
+            }
         }
     }
+    
     
     
 
@@ -152,15 +165,21 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         arScnView.session.getCurrentWorldMap { (map, error) in
             if map != nil {
                 let filteredMapAnchors = map?.anchors.filter({ (anchor) -> Bool in
-                        self.arScnView.session.remove(anchor: anchor)
+                    self.arScnView.session.remove(anchor: anchor)
                     return !anchor.isMember(of: ARAnchor.self)
                 })
                 map?.anchors = filteredMapAnchors ?? []
             }
         }
         Heroes.heroDict.values.forEach { (hero) in
-            hero.arAnchorContainer = nil
             hero.heroMapURLString = nil
+            if let oldANchor = hero.arAnchorContainer?.anchor {
+                arScnView.session.remove(anchor: oldANchor)
+            }
+            if let oldAnchorNode = arScnView.anchor(for: hero.getHeroScnNode()) {
+                arScnView.session.remove(anchor: oldAnchorNode)
+            }
+            hero.arAnchorContainer = nil
         }
         saveMap()
     }
