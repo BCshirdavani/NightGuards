@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SceneKit
 
 struct HeroUIView: View {
     @Binding var heroSelected: String
@@ -61,6 +62,17 @@ struct HeroUIView: View {
                 self.heroSelected = "trump"
                 if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
                     self.anchorPlaced = anchorStatus
+                }
+                if let tumpAnimator = Animators.animeDict[self.heroSelected] {
+                    print(" ~ ~ trump animator already exists")
+                } else {
+                    let trumpNode = SCNNode()
+                    trumpNode.name = "trumpNode_heroUI"
+                    let trumpAnimator = Animator(heroToAnimate: Heroes.heroDict[self.heroSelected]!, sceneNode: trumpNode)
+                    Animators.animeDict.updateValue(trumpAnimator, forKey: self.heroSelected)
+                    if let trumpAnimator = Animators.animeDict["trump"] {
+                        trumpAnimator.loadAnimations()
+                    }
                 }
             }.padding(10)
 		}

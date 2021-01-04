@@ -30,12 +30,10 @@ struct HeroFactory {
     
     func getTrumpNodes() -> SCNNode {
         let node = SCNNode()
-        node.name = "trump"
-//        let scene = SCNScene(named: "art.scnassets/TrumpAnimations/IdleFixed.dae")
-//        let nodeArray = scene!.rootNode.childNodes
-//        for childNode in nodeArray {
-//          node.addChildNode(childNode as SCNNode)
-//        }
+        node.name = "trumpNode_fromFactoryGetter"
+        if let trumpNodeFromSingleton = Animators.animeDict["trump"]?.node {
+            node.addChildNode(trumpNodeFromSingleton)
+        }
         return node
     }
     

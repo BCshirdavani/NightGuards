@@ -27,13 +27,11 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         }
     }()
     let coachingOverlay: ARCoachingOverlayView = ARCoachingOverlayView()
-    var animators: Dictionary<String, Animator> = Dictionary<String, Animator>()
     
     override init() {
         arScnView = ARSCNView(frame: .zero)
         arScnView.autoenablesDefaultLighting = true
-        arScnView.rendersMotionBlur = true
-        arScnView.automaticallyUpdatesLighting = true
+//        arScnView.rendersMotionBlur = true
     }
     
     func makeUIView(context: Context) -> ARSCNView {
@@ -42,6 +40,12 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         arScnView.delegate = self
         loadMap()
         setupCoachingOverlay()
+        // TODO: rather than anchor "all" animations to scene, do this one at a time, as needed when model is placed
+        if !Animators.animeDict.isEmpty {
+            Animators.animeDict.values.forEach { (animator) in
+                animator.anchorNodeToScene(sceneView: arScnView)
+            }
+        }
         return arScnView
     }
     
@@ -50,13 +54,13 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
     func configAR(with worldMap: ARWorldMap? = nil) {
         let configuration = self.setupARConfig(with: worldMap)
         let options: ARSession.RunOptions = [.stopTrackedRaycasts, .resetTracking, .removeExistingAnchors]
-        self.arScnView.debugOptions = [.showWorldOrigin, .showFeaturePoints, /*.renderAsWireframe*/]
+//        self.arScnView.debugOptions = [.showWorldOrigin, .showFeaturePoints, .showBoundingBoxes]
         self.arScnView.session.run(configuration, options: options)
     }
     
     func setupARConfig(with worldMap: ARWorldMap? = nil) -> ARWorldTrackingConfiguration {
         let config = ARWorldTrackingConfiguration()
-        config.planeDetection = [.horizontal, .vertical]
+        config.planeDetection = [.horizontal]
         config.worldAlignment = .gravityAndHeading
         config.environmentTexturing = .automatic
         if ARGeoTrackingConfiguration.isSupported {
@@ -127,16 +131,11 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
             print(" ~ tappedNode name: \(tappedNode.name)")
             print(" ~ tappedNode parent name: \(tappedNode.parent?.name)")
             if tappedNode.name?.contains("trump") ?? false || tappedNode.parent?.name?.contains("trump") ?? false {
-                if let trumpAnimations = animators["trump"] {
-                    trumpAnimations.playAnimation(key: "twerk")
+                if let trumpAnimations = Animators.animeDict["trump"] {
+                    trumpAnimations.playAnimation(key: "twerk", activeScnView: arScnView)
                 }
             }
         }
-    }
-    
-    func updateAnimatorForHero(heroIn: HeroImpl, node: SCNNode) {
-        let animator = Animator(heroToAnimate: heroIn, sceneNode: node, arSceneView: arScnView)
-        animators.updateValue(animator, forKey: heroIn.heroName)
     }
     
     
@@ -151,22 +150,39 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
     }
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
-        let anchorName = anchors.first?.name
+//        let anchorName = anchors.first?.name
     }
     
     // MARK: ARSCNViewDelegate method
-    // TODO: call updateAnimatorForHero here, but using the appropriate hero for the node
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if let chosenHero: HeroImpl = Heroes.heroDict[anchor.name ?? ""] {
+            print(" - - - - - render node: \(node.name) for anchor: \(anchor.name)")
             self.arScnView.scene.rootNode.childNodes.forEach { (thisNode) in
                 if thisNode.name == anchor.name {
                     thisNode.removeFromParentNode()
                 }
             }
-            node.name = anchor.name
-            node.addChildNode(chosenHero.getHeroScnNode())
             if anchor.name == "trump" {
-                self.updateAnimatorForHero(heroIn: chosenHero, node: node)
+                // attach proper parent node for trump animations
+                // TODO: this is ugly, and redundant - see HeroUI selection, we build trump animator there too
+                if let trumpAnimator = Animators.animeDict["trump"] {
+                    // case where current session, user chooses and places this object
+                    trumpAnimator.addParentToChildNode(parentNode: node)
+                } else {
+                    // case where we enter and expect to see persisted object
+                    let trumpNode = SCNNode()
+                    trumpNode.name = "trumpNode_arscnView"
+                    let trumpAnimator = Animator(heroToAnimate: Heroes.heroDict[anchor.name!]!, sceneNode: trumpNode)
+                    Animators.animeDict.updateValue(trumpAnimator, forKey: anchor.name!)
+                    if let trumpAnimator = Animators.animeDict["trump"] {
+                        trumpAnimator.loadAnimations()
+                    }
+                    trumpAnimator.addParentToChildNode(parentNode: node)
+                }
+            } else {
+                // ball, square, cone
+                node.name = anchor.name
+                node.addChildNode(chosenHero.getHeroScnNode())
             }
         }
     }
@@ -194,6 +210,8 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
             }
             hero.arAnchorContainer = nil
         }
+        let trumpNode = arScnView.scene.rootNode.childNode(withName: "trumpNode_heroUI", recursively: true)
+        trumpNode?.removeFromParentNode()
         saveMap()
     }
     
