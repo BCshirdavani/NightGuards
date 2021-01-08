@@ -22,6 +22,9 @@ struct HeroFactory {
         case "trump":
             let tump = getTrumpNodes()
             return tump
+        case "donut":
+            let tump = getDonutNode()
+            return tump
         default:
             let box = makeBoxNode()
             return box
@@ -34,6 +37,19 @@ struct HeroFactory {
         if let trumpNodeFromSingleton = Animators.animeDict["trump"]?.node {
             node.addChildNode(trumpNodeFromSingleton)
         }
+        return node
+    }
+    
+    func getDonutNode() -> SCNNode {
+        let node = SCNNode()
+        node.name = "donut"
+        let scene = SCNScene(named: "art.scnassets/Donut/donutDelta01.dae")
+        let nodeArray = scene!.rootNode.childNodes
+        for childNode in nodeArray {
+            node.addChildNode(childNode as SCNNode)
+        }
+        node.scale = SCNVector3(0.1, 0.1, 0.1)
+        node.simdScale = SIMD3(SCNVector3(0.1, 0.1, 0.1))
         return node
     }
     

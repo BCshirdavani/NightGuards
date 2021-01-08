@@ -55,6 +55,16 @@ struct HeroUIView: View {
                 }
 			}.padding(10)
             HStack {
+                Text("Donut").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                Spacer()
+                Image.init(systemName: "smallcircle.fill.circle.fill").scaleEffect(2)
+            }.contentShape(Rectangle()).onTapGesture {
+                self.heroSelected = "donut"
+                if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
+                    self.anchorPlaced = anchorStatus
+                }
+            }.padding(10)
+            HStack {
                 Text("Trump").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                 Spacer()
                 Image.init(systemName: "figure.walk").scaleEffect(2)

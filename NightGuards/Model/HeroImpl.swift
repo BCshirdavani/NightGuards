@@ -112,6 +112,7 @@ final class Heroes: Codable {
         Heroes.heroDict["cone"] = HeroImpl(heroName: "cone")
         Heroes.heroDict["kang"] = HeroImpl(heroName: "kang")
         Heroes.heroDict["trump"] = HeroImpl(heroName: "trump")
+        Heroes.heroDict["donut"] = HeroImpl(heroName: "donut")
         load()
     }
     
