@@ -14,24 +14,24 @@ class Animator {
     
     let subject: Hero
     let node: SCNNode
-//    let sceneView: ARSCNView
     var animations = [String: CAAnimation]()
     var idle: Bool = true
+    let resourceHelper: AnimationResourceHelper
     
     init(heroToAnimate: HeroImpl, sceneNode: SCNNode) {
         subject = heroToAnimate
         node = sceneNode
-//        loadAnimations()
+        resourceHelper = AnimationResourceHelper(name: heroToAnimate.heroName)
     }
     
     
     
     func loadAnimations () {
         // Load the character in the idle animation
-        let idleScene = SCNScene(named: "art.scnassets/TrumpAnimations/IdleFixed.dae")!
+        let idleScene = SCNScene(named: resourceHelper.getIdleNamePath())!
         
         let trumpNode = SCNNode()
-        trumpNode.name = "trumpNode_animator"
+        trumpNode.name = resourceHelper.getNodeName()
         
         // Add all the child nodes to the parent node
         for child in idleScene.rootNode.childNodes {
@@ -44,9 +44,12 @@ class Animator {
         
         // Load all the DAE animations
         DispatchQueue.main.async {
-            self.loadAnimation(withKey: "crunch", sceneName: "art.scnassets/TrumpAnimations/biCrunch", animationIdentifier: "biCrunch-1")
-            self.loadAnimation(withKey: "jump", sceneName: "art.scnassets/TrumpAnimations/jump", animationIdentifier: "jump-1")
-            self.loadAnimation(withKey: "twerk", sceneName: "art.scnassets/TrumpAnimations/Twerk", animationIdentifier: "Twerk-1")
+            let animations = self.resourceHelper.getAnimations()
+            animations.keys.forEach { (k) in
+                if let resource = animations[k] {
+                    self.loadAnimation(withKey: k, sceneName: resource["scene"]!, animationIdentifier: resource["id"]!, repCount: (resource["count"]! as NSString).floatValue)
+                }
+            }
         }
     }
     
@@ -59,13 +62,13 @@ class Animator {
         sceneView.scene.rootNode.addChildNode(node)
     }
     
-    func loadAnimation(withKey: String, sceneName: String, animationIdentifier: String) {
+    func loadAnimation(withKey: String, sceneName: String, animationIdentifier: String, repCount: Float = 1) {
         let sceneURL = Bundle.main.url(forResource: sceneName, withExtension: "dae")
         let sceneSource = SCNSceneSource(url: sceneURL!, options: nil)
         
         if let animationObject = sceneSource?.entryWithIdentifier(animationIdentifier, withClass: CAAnimation.self) {
             // The animation will only play once
-            animationObject.repeatCount = 1
+            animationObject.repeatCount = repCount
             // To create smooth transitions between animations
             animationObject.fadeInDuration = CGFloat(1)
             animationObject.fadeOutDuration = CGFloat(0.5)
@@ -98,8 +101,91 @@ final class Animators: ObservableObject {
     static var animeDict: Dictionary<String, Animator> = Dictionary<String, Animator>()
 //    var animeDict: Dictionary<String, Animator> = Dictionary<String, Animator>()
     
-    func updateAnimatorForHero(heroIn: HeroImpl, node: SCNNode) {
-        let animator = Animator(heroToAnimate: heroIn, sceneNode: node)
-        Animators.animeDict.updateValue(animator, forKey: heroIn.heroName)
+//    func updateAnimatorForHero(heroIn: HeroImpl, node: SCNNode) {
+//        let animator = Animator(heroToAnimate: heroIn, sceneNode: node)
+//        Animators.animeDict.updateValue(animator, forKey: heroIn.heroName)
+//    }
+}
+
+
+struct AnimationResourceHelper {
+    let name: String
+    
+    init(name: String) {
+        self.name = name
     }
+    
+    func getNodeName() -> String {
+        switch name {
+        case "trump":
+            return "trumpNode_animator"
+        case "lucha":
+            return "luchaNode_animator"
+        case "ninja":
+            return "ninjaNode_animator"
+        case "paladin":
+            return "paladinNode_animator"
+        default:
+            return "otherNode_animator"
+        }
+    }
+    
+    func getIdleNamePath() -> String {
+        switch name {
+        case "trump":
+            return "art.scnassets/TrumpAnimations/IdleFixed.dae"
+        case "lucha":
+            return "art.scnassets/Lucha/idleLucha.dae"
+        case "ninja":
+            return "art.scnassets/Ninja/idle.dae"
+        case "paladin":
+            return "art.scnassets/Paladin/idle.dae"
+        default:
+            return "no animation for selected hero"
+        }
+    }
+    
+    // TODO: add the remaining animations
+    func getAnimations() -> [String: [String: String]] {
+        var dict = [String: [String: String]]()
+        switch name {
+        case "trump":
+            dict["crunch"] = ["id": "biCrunch-1",
+                              "scene": "art.scnassets/TrumpAnimations/biCrunch",
+                              "count": "8"]
+            dict["jump"] = ["id": "jump-1",
+                            "scene": "art.scnassets/TrumpAnimations/jump",
+                            "count": "1"]
+            dict["twerl"] = ["id": "Twerk-1",
+                             "scene": "art.scnassets/TrumpAnimations/Twerk",
+                             "count": "1"]
+            return dict
+        case "lucha":
+            dict["slam"] = ["id": "GrabSlam-1",
+                            "scene": "art.scnassets/Lucha/GrabSlam",
+                            "count": "1"]
+            dict["jog"] = ["id": "jog-1",
+                           "scene": "art.scnassets/Lucha/jog",
+                           "count": "1"]
+            dict["jumpJack"] = ["id": "jumpJack-1",
+                                "scene": "art.scnassets/Lucha/jumpJack",
+                                "count": "8"]
+            dict["pain"] = ["id": "Pain-1",
+                                "scene": "art.scnassets/Lucha/Pain",
+                                "count": "1"]
+            dict["stomp"] = ["id": "stomping-1",
+                                "scene": "art.scnassets/Lucha/stomping",
+                                "count": "1"]
+            return dict
+        case "ninja":
+            return dict
+        case "paladin":
+            return dict
+        default:
+            return dict
+        }
+    }
+    
+    
+    
 }

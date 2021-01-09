@@ -22,6 +22,9 @@ struct HeroFactory {
         case "trump":
             let tump = getTrumpNodes()
             return tump
+        case "lucha":
+            let tump = getLuchaNodes()
+            return tump
         case "donut":
             let tump = getDonutNode()
             return tump
@@ -36,6 +39,15 @@ struct HeroFactory {
         node.name = "trumpNode_fromFactoryGetter"
         if let trumpNodeFromSingleton = Animators.animeDict["trump"]?.node {
             node.addChildNode(trumpNodeFromSingleton)
+        }
+        return node
+    }
+    
+    func getLuchaNodes()-> SCNNode {
+        let node = SCNNode()
+        node.name = "luchaNode_fromFactoryGetter"
+        if let luchaNodeFromSingleton = Animators.animeDict["lucha"]?.node {
+            node.addChildNode(luchaNodeFromSingleton)
         }
         return node
     }

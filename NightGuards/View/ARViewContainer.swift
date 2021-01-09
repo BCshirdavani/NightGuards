@@ -130,9 +130,18 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
         if let tappedNode : SCNNode = hits.first?.node {
             print(" ~ tappedNode name: \(tappedNode.name)")
             print(" ~ tappedNode parent name: \(tappedNode.parent?.name)")
+            // TODO: add conditions for other objects tapped
             if tappedNode.name?.contains("trump") ?? false || tappedNode.parent?.name?.contains("trump") ?? false {
                 if let trumpAnimations = Animators.animeDict["trump"] {
-                    trumpAnimations.playAnimation(key: "twerk", activeScnView: arScnView)
+                    if let randomAnimePick = trumpAnimations.animations.keys.randomElement() {
+                        trumpAnimations.playAnimation(key: randomAnimePick, activeScnView: arScnView)
+                    }
+                }
+            } else if tappedNode.name?.contains("lucha") ?? false || tappedNode.parent?.name?.contains("lucha") ?? false {
+                if let luchaAnimations = Animators.animeDict["lucha"] {
+                    if let randomAnimePick = luchaAnimations.animations.keys.randomElement() {
+                        luchaAnimations.playAnimation(key: randomAnimePick, activeScnView: arScnView)
+                    }
                 }
             }
         }
@@ -179,7 +188,23 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
                     }
                     trumpAnimator.addParentToChildNode(parentNode: node)
                 }
-            } else {
+            } else if anchor.name == "lucha" {
+                if let luchaAnimator = Animators.animeDict["lucha"] {
+                    // case where current session, user chooses and places this object
+                    luchaAnimator.addParentToChildNode(parentNode: node)
+                } else {
+                    // case where we enter and expect to see persisted object
+                    let luchaNode = SCNNode()
+                    luchaNode.name = "luchaNode_arscnView"
+                    let luchaAnimator = Animator(heroToAnimate: Heroes.heroDict[anchor.name!]!, sceneNode: luchaNode)
+                    Animators.animeDict.updateValue(luchaAnimator, forKey: anchor.name!)
+                    if let luchaAnimator = Animators.animeDict["lucha"] {
+                        luchaAnimator.loadAnimations()
+                    }
+                    luchaAnimator.addParentToChildNode(parentNode: node)
+                }
+            }
+            else {
                 // ball, square, cone
                 node.name = anchor.name
                 node.addChildNode(chosenHero.getHeroScnNode())

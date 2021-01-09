@@ -73,6 +73,7 @@ struct HeroUIView: View {
                 if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
                     self.anchorPlaced = anchorStatus
                 }
+                // TODO: redundant code with arViewContainer
                 if let tumpAnimator = Animators.animeDict[self.heroSelected] {
                     print(" ~ ~ trump animator already exists")
                 } else {
@@ -82,6 +83,28 @@ struct HeroUIView: View {
                     Animators.animeDict.updateValue(trumpAnimator, forKey: self.heroSelected)
                     if let trumpAnimator = Animators.animeDict["trump"] {
                         trumpAnimator.loadAnimations()
+                    }
+                }
+            }.padding(10)
+            HStack {
+                Text("Lucha").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                Spacer()
+                Image.init(systemName: "staroflife").scaleEffect(2)
+            }.contentShape(Rectangle()).onTapGesture {
+                self.heroSelected = "lucha"
+                if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
+                    self.anchorPlaced = anchorStatus
+                }
+                // TODO: redundant code with arViewContainer
+                if let luchaAnimator = Animators.animeDict[self.heroSelected] {
+                    print(" ~ ~ trump animator already exists")
+                } else {
+                    let luchaNode = SCNNode()
+                    luchaNode.name = "trumpNode_heroUI"
+                    let luchaAnimator = Animator(heroToAnimate: Heroes.heroDict[self.heroSelected]!, sceneNode: luchaNode)
+                    Animators.animeDict.updateValue(luchaAnimator, forKey: self.heroSelected)
+                    if let luchaAnimator = Animators.animeDict["lucha"] {
+                        luchaAnimator.loadAnimations()
                     }
                 }
             }.padding(10)
