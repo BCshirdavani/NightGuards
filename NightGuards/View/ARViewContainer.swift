@@ -144,6 +144,20 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
                     }
                 }
             }
+            else if tappedNode.name?.contains("ninja") ?? false || tappedNode.parent?.name?.contains("ninja") ?? false {
+                if let ninjaAnimations = Animators.animeDict["ninja"] {
+                    if let randomAnimePick = ninjaAnimations.animations.keys.randomElement() {
+                        ninjaAnimations.playAnimation(key: randomAnimePick, activeScnView: arScnView)
+                    }
+                }
+            }
+            else if tappedNode.name?.contains("paladin") ?? false || tappedNode.parent?.name?.contains("paladin") ?? false {
+                if let paladinAnimations = Animators.animeDict["paladin"] {
+                    if let randomAnimePick = paladinAnimations.animations.keys.randomElement() {
+                        paladinAnimations.playAnimation(key: randomAnimePick, activeScnView: arScnView)
+                    }
+                }
+            }
         }
     }
     

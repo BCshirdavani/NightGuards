@@ -171,15 +171,45 @@ struct AnimationResourceHelper {
                                 "scene": "art.scnassets/Lucha/jumpJack",
                                 "count": "8"]
             dict["pain"] = ["id": "Pain-1",
-                                "scene": "art.scnassets/Lucha/Pain",
-                                "count": "1"]
+                            "scene": "art.scnassets/Lucha/Pain",
+                            "count": "1"]
             dict["stomp"] = ["id": "stomping-1",
-                                "scene": "art.scnassets/Lucha/stomping",
-                                "count": "1"]
+                             "scene": "art.scnassets/Lucha/stomping",
+                             "count": "1"]
             return dict
         case "ninja":
+            dict["crescentKick"] = ["id": "CrescentJumpKick-1",
+                                    "scene": "art.scnassets/Ninja/CrescentJumpKick",
+                                    "count": "1"]
+            dict["hurricane"] = ["id": "hurricane-1",
+                                 "scene": "art.scnassets/Ninja/hurricane",
+                                 "count": "5"]
+            dict["jump"] = ["id": "jump-1",
+                            "scene": "art.scnassets/Ninja/jump",
+                            "count": "1"]
+            dict["kick"] = ["id": "kick-1",
+                            "scene": "art.scnassets/Ninja/kick",
+                            "count": "1"]
+            dict["runFlip"] = ["id": "RunFlip-1",
+                               "scene": "art.scnassets/Ninja/RunFlip",
+                               "count": "1"]
+            dict["runAway"] = ["id": "RunningAway-1",
+                               "scene": "art.scnassets/Ninja/RunningAway",
+                               "count": "1"]
             return dict
         case "paladin":
+            dict["circle"] = ["id": "circle-1",
+                              "scene": "art.scnassets/Paladin/circle",
+                              "count": "1"]
+            dict["impact"] = ["id": "impact-1",
+                              "scene": "art.scnassets/Paladin/impact",
+                              "count": "1"]
+            dict["slash1"] = ["id": "slash_1-1",
+                              "scene": "art.scnassets/Paladin/slash_1",
+                              "count": "1"]
+            dict["slash2"] = ["id": "slash_2-1",
+                              "scene": "art.scnassets/Paladin/slash_2",
+                              "count": "1"]
             return dict
         default:
             return dict

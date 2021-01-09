@@ -97,14 +97,58 @@ struct HeroUIView: View {
                 }
                 // TODO: redundant code with arViewContainer
                 if let luchaAnimator = Animators.animeDict[self.heroSelected] {
-                    print(" ~ ~ trump animator already exists")
+                    print(" ~ ~ lucha animator already exists")
                 } else {
                     let luchaNode = SCNNode()
-                    luchaNode.name = "trumpNode_heroUI"
+                    luchaNode.name = "luchaNode_heroUI"
                     let luchaAnimator = Animator(heroToAnimate: Heroes.heroDict[self.heroSelected]!, sceneNode: luchaNode)
                     Animators.animeDict.updateValue(luchaAnimator, forKey: self.heroSelected)
                     if let luchaAnimator = Animators.animeDict["lucha"] {
                         luchaAnimator.loadAnimations()
+                    }
+                }
+            }.padding(10)
+            HStack {
+                Text("Ninja").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                Spacer()
+                Image.init(systemName: "staroflife").scaleEffect(2)
+            }.contentShape(Rectangle()).onTapGesture {
+                self.heroSelected = "ninja"
+                if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
+                    self.anchorPlaced = anchorStatus
+                }
+                // TODO: redundant code with arViewContainer
+                if let ninjaAnimator = Animators.animeDict[self.heroSelected] {
+                    print(" ~ ~ ninja animator already exists")
+                } else {
+                    let ninjaNode = SCNNode()
+                    ninjaNode.name = "ninjaNode_heroUI"
+                    let ninjaAnimator = Animator(heroToAnimate: Heroes.heroDict[self.heroSelected]!, sceneNode: ninjaNode)
+                    Animators.animeDict.updateValue(ninjaAnimator, forKey: self.heroSelected)
+                    if let ninjaAnimator = Animators.animeDict["ninja"] {
+                        ninjaAnimator.loadAnimations()
+                    }
+                }
+            }.padding(10)
+            HStack {
+                Text("Paladin").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                Spacer()
+                Image.init(systemName: "staroflife").scaleEffect(2)
+            }.contentShape(Rectangle()).onTapGesture {
+                self.heroSelected = "paladin"
+                if let anchorStatus = Heroes.heroDict[heroSelected]?.isPlaced() {
+                    self.anchorPlaced = anchorStatus
+                }
+                // TODO: redundant code with arViewContainer
+                if let paladinAnimator = Animators.animeDict[self.heroSelected] {
+                    print(" ~ ~ paladin animator already exists")
+                } else {
+                    let paladinNode = SCNNode()
+                    paladinNode.name = "paladinNode_heroUI"
+                    let paladinAnimator = Animator(heroToAnimate: Heroes.heroDict[self.heroSelected]!, sceneNode: paladinNode)
+                    Animators.animeDict.updateValue(paladinAnimator, forKey: self.heroSelected)
+                    if let paladinAnimator = Animators.animeDict["paladin"] {
+                        paladinAnimator.loadAnimations()
                     }
                 }
             }.padding(10)

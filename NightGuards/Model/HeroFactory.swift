@@ -20,14 +20,20 @@ struct HeroFactory {
             let cone = makeConeNode()
             return cone
         case "trump":
-            let tump = getTrumpNodes()
-            return tump
+            let trump = getTrumpNodes()
+            return trump
         case "lucha":
-            let tump = getLuchaNodes()
-            return tump
+            let lucha = getLuchaNodes()
+            return lucha
         case "donut":
-            let tump = getDonutNode()
-            return tump
+            let donut = getDonutNode()
+            return donut
+        case "paladin":
+            let paladin = getPaladinNodes()
+            return paladin
+        case "ninja":
+            let ninja = getNinjaNodes()
+            return ninja
         default:
             let box = makeBoxNode()
             return box
@@ -39,6 +45,24 @@ struct HeroFactory {
         node.name = "trumpNode_fromFactoryGetter"
         if let trumpNodeFromSingleton = Animators.animeDict["trump"]?.node {
             node.addChildNode(trumpNodeFromSingleton)
+        }
+        return node
+    }
+    
+    func getPaladinNodes() -> SCNNode {
+        let node = SCNNode()
+        node.name = "paladinNode_fromFactoryGetter"
+        if let paladinNodeFromSingleton = Animators.animeDict["paladin"]?.node {
+            node.addChildNode(paladinNodeFromSingleton)
+        }
+        return node
+    }
+    
+    func getNinjaNodes() -> SCNNode {
+        let node = SCNNode()
+        node.name = "ninjaNode_fromFactoryGetter"
+        if let ninjaNodeFromSingleton = Animators.animeDict["ninja"]?.node {
+            node.addChildNode(ninjaNodeFromSingleton)
         }
         return node
     }
