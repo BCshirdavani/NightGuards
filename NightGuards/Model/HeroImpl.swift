@@ -32,7 +32,7 @@ final class HeroImpl: Hero, Codable {
     
     init(heroName: String) {
         self.heroName = heroName
-        if heroName == "trump" {
+        if heroName == K.TRUMP {
             shouldAnimate = true
         } else {
             shouldAnimate = false
@@ -108,14 +108,11 @@ final class Heroes: Codable {
     public static var heroDict = [String : HeroImpl]()
     
     init() {
-        Heroes.heroDict["ball"] = HeroImpl(heroName: "ball")
-        Heroes.heroDict["cone"] = HeroImpl(heroName: "cone")
-        Heroes.heroDict["kang"] = HeroImpl(heroName: "kang")
-        Heroes.heroDict["trump"] = HeroImpl(heroName: "trump")
-        Heroes.heroDict["donut"] = HeroImpl(heroName: "donut")
-        Heroes.heroDict["lucha"] = HeroImpl(heroName: "lucha")
-        Heroes.heroDict["paladin"] = HeroImpl(heroName: "paladin")
-        Heroes.heroDict["ninja"] = HeroImpl(heroName: "ninja")
+        Heroes.heroDict[K.TRUMP] = HeroImpl(heroName: K.TRUMP)
+        Heroes.heroDict[K.DONUT] = HeroImpl(heroName: K.DONUT)
+        Heroes.heroDict[K.LUCHA] = HeroImpl(heroName: K.LUCHA)
+        Heroes.heroDict[K.PALADIN] = HeroImpl(heroName: K.PALADIN)
+        Heroes.heroDict[K.NINJA] = HeroImpl(heroName: K.NINJA)
         load()
     }
     

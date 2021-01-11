@@ -131,28 +131,28 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
             print(" ~ tappedNode name: \(tappedNode.name)")
             print(" ~ tappedNode parent name: \(tappedNode.parent?.name)")
             // TODO: add conditions for other objects tapped
-            if tappedNode.name?.contains("trump") ?? false || tappedNode.parent?.name?.contains("trump") ?? false {
-                if let trumpAnimations = Animators.animeDict["trump"] {
+            if tappedNode.name?.contains(K.TRUMP) ?? false || tappedNode.parent?.name?.contains(K.TRUMP) ?? false {
+                if let trumpAnimations = Animators.animeDict[K.TRUMP] {
                     if let randomAnimePick = trumpAnimations.animations.keys.randomElement() {
                         trumpAnimations.playAnimation(key: randomAnimePick, activeScnView: arScnView)
                     }
                 }
-            } else if tappedNode.name?.contains("lucha") ?? false || tappedNode.parent?.name?.contains("lucha") ?? false {
-                if let luchaAnimations = Animators.animeDict["lucha"] {
+            } else if tappedNode.name?.contains(K.LUCHA) ?? false || tappedNode.parent?.name?.contains(K.LUCHA) ?? false {
+                if let luchaAnimations = Animators.animeDict[K.LUCHA] {
                     if let randomAnimePick = luchaAnimations.animations.keys.randomElement() {
                         luchaAnimations.playAnimation(key: randomAnimePick, activeScnView: arScnView)
                     }
                 }
             }
-            else if tappedNode.name?.contains("ninja") ?? false || tappedNode.parent?.name?.contains("ninja") ?? false {
-                if let ninjaAnimations = Animators.animeDict["ninja"] {
+            else if tappedNode.name?.contains(K.NINJA) ?? false || tappedNode.parent?.name?.contains(K.NINJA) ?? false {
+                if let ninjaAnimations = Animators.animeDict[K.NINJA] {
                     if let randomAnimePick = ninjaAnimations.animations.keys.randomElement() {
                         ninjaAnimations.playAnimation(key: randomAnimePick, activeScnView: arScnView)
                     }
                 }
             }
-            else if tappedNode.name?.contains("paladin") ?? false || tappedNode.parent?.name?.contains("paladin") ?? false {
-                if let paladinAnimations = Animators.animeDict["paladin"] {
+            else if tappedNode.name?.contains(K.PALADIN) ?? false || tappedNode.parent?.name?.contains(K.PALADIN) ?? false {
+                if let paladinAnimations = Animators.animeDict[K.PALADIN] {
                     if let randomAnimePick = paladinAnimations.animations.keys.randomElement() {
                         paladinAnimations.playAnimation(key: randomAnimePick, activeScnView: arScnView)
                     }
@@ -185,37 +185,67 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
                     thisNode.removeFromParentNode()
                 }
             }
-            if anchor.name == "trump" {
+            if anchor.name == K.TRUMP {
                 // attach proper parent node for trump animations
                 // TODO: this is ugly, and redundant - see HeroUI selection, we build trump animator there too
-                if let trumpAnimator = Animators.animeDict["trump"] {
+                if let trumpAnimator = Animators.animeDict[K.TRUMP] {
                     // case where current session, user chooses and places this object
                     trumpAnimator.addParentToChildNode(parentNode: node)
                 } else {
                     // case where we enter and expect to see persisted object
                     let trumpNode = SCNNode()
-                    trumpNode.name = "trumpNode_arscnView"
+                    trumpNode.name = "\(K.TRUMP)Node_arscnView"
                     let trumpAnimator = Animator(heroToAnimate: Heroes.heroDict[anchor.name!]!, sceneNode: trumpNode)
                     Animators.animeDict.updateValue(trumpAnimator, forKey: anchor.name!)
-                    if let trumpAnimator = Animators.animeDict["trump"] {
+                    if let trumpAnimator = Animators.animeDict[K.TRUMP] {
                         trumpAnimator.loadAnimations()
                     }
                     trumpAnimator.addParentToChildNode(parentNode: node)
                 }
-            } else if anchor.name == "lucha" {
-                if let luchaAnimator = Animators.animeDict["lucha"] {
+            } else if anchor.name == K.LUCHA {
+                if let luchaAnimator = Animators.animeDict[K.LUCHA] {
                     // case where current session, user chooses and places this object
                     luchaAnimator.addParentToChildNode(parentNode: node)
                 } else {
                     // case where we enter and expect to see persisted object
                     let luchaNode = SCNNode()
-                    luchaNode.name = "luchaNode_arscnView"
+                    luchaNode.name = "\(K.LUCHA)Node_arscnView"
                     let luchaAnimator = Animator(heroToAnimate: Heroes.heroDict[anchor.name!]!, sceneNode: luchaNode)
                     Animators.animeDict.updateValue(luchaAnimator, forKey: anchor.name!)
-                    if let luchaAnimator = Animators.animeDict["lucha"] {
+                    if let luchaAnimator = Animators.animeDict[K.LUCHA] {
                         luchaAnimator.loadAnimations()
                     }
                     luchaAnimator.addParentToChildNode(parentNode: node)
+                }
+            } else if anchor.name == K.NINJA {
+                if let ninjaAnimator = Animators.animeDict[K.NINJA] {
+                    // case where current session, user chooses and places this object
+                    ninjaAnimator.addParentToChildNode(parentNode: node)
+                } else {
+                    // case where we enter and expect to see persisted object
+                    let ninjaNode = SCNNode()
+                    ninjaNode.name = "\(K.NINJA)Node_arscnView"
+                    let ninjaAnimator = Animator(heroToAnimate: Heroes.heroDict[anchor.name!]!, sceneNode: ninjaNode)
+                    Animators.animeDict.updateValue(ninjaAnimator, forKey: anchor.name!)
+                    if let ninjaAnimator = Animators.animeDict[K.NINJA] {
+                        ninjaAnimator.loadAnimations()
+                    }
+                    ninjaAnimator.addParentToChildNode(parentNode: node)
+                }
+            } else if anchor.name == K.PALADIN {
+                if let paladinAnimator = Animators.animeDict[K.PALADIN] {
+                    // case where current session, user chooses and places this object
+                    paladinAnimator.addParentToChildNode(parentNode: node)
+                } else {
+                    // case where we enter and expect to see persisted object
+                    let paladinNode = SCNNode()
+                    paladinNode.name = "\(K.PALADIN)Node_arscnView"
+                    let paladinAnimator = Animator(heroToAnimate: Heroes.heroDict[anchor.name!]!, sceneNode: paladinNode)
+                    Animators.animeDict.updateValue(paladinAnimator, forKey: anchor.name!)
+                    if let paladinAnimator = Animators.animeDict[K.PALADIN] {
+                        paladinAnimator.loadAnimations()
+                    }
+                    paladinAnimator.addParentToChildNode(parentNode: node)
                 }
             }
             else {

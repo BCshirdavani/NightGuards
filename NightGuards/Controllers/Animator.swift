@@ -39,7 +39,7 @@ class Animator {
         }
         
         // Set up some properties
-        trumpNode.scale = SCNVector3(0.001, 0.001, 0.001)
+        trumpNode.scale = SCNVector3(0.003, 0.003, 0.003)
         node.addChildNode(trumpNode)
         
         // Load all the DAE animations
@@ -117,14 +117,14 @@ struct AnimationResourceHelper {
     
     func getNodeName() -> String {
         switch name {
-        case "trump":
-            return "trumpNode_animator"
-        case "lucha":
-            return "luchaNode_animator"
-        case "ninja":
-            return "ninjaNode_animator"
-        case "paladin":
-            return "paladinNode_animator"
+        case K.TRUMP:
+            return "\(K.TRUMP)Node_animator"
+        case K.LUCHA:
+            return "\(K.LUCHA)Node_animator"
+        case K.NINJA:
+            return "\(K.NINJA)Node_animator"
+        case K.PALADIN:
+            return "\(K.PALADIN)Node_animator"
         default:
             return "otherNode_animator"
         }
@@ -132,13 +132,13 @@ struct AnimationResourceHelper {
     
     func getIdleNamePath() -> String {
         switch name {
-        case "trump":
+        case K.TRUMP:
             return "art.scnassets/TrumpAnimations/IdleFixed.dae"
-        case "lucha":
+        case K.LUCHA:
             return "art.scnassets/Lucha/idleLucha.dae"
-        case "ninja":
+        case K.NINJA:
             return "art.scnassets/Ninja/idle.dae"
-        case "paladin":
+        case K.PALADIN:
             return "art.scnassets/Paladin/idle.dae"
         default:
             return "no animation for selected hero"
@@ -149,7 +149,7 @@ struct AnimationResourceHelper {
     func getAnimations() -> [String: [String: String]] {
         var dict = [String: [String: String]]()
         switch name {
-        case "trump":
+        case K.TRUMP:
             dict["crunch"] = ["id": "biCrunch-1",
                               "scene": "art.scnassets/TrumpAnimations/biCrunch",
                               "count": "8"]
@@ -160,7 +160,7 @@ struct AnimationResourceHelper {
                              "scene": "art.scnassets/TrumpAnimations/Twerk",
                              "count": "1"]
             return dict
-        case "lucha":
+        case K.LUCHA:
             dict["slam"] = ["id": "GrabSlam-1",
                             "scene": "art.scnassets/Lucha/GrabSlam",
                             "count": "1"]
@@ -177,7 +177,7 @@ struct AnimationResourceHelper {
                              "scene": "art.scnassets/Lucha/stomping",
                              "count": "1"]
             return dict
-        case "ninja":
+        case K.NINJA:
             dict["crescentKick"] = ["id": "CrescentJumpKick-1",
                                     "scene": "art.scnassets/Ninja/CrescentJumpKick",
                                     "count": "1"]
@@ -197,7 +197,7 @@ struct AnimationResourceHelper {
                                "scene": "art.scnassets/Ninja/RunningAway",
                                "count": "1"]
             return dict
-        case "paladin":
+        case K.PALADIN:
             dict["circle"] = ["id": "circle-1",
                               "scene": "art.scnassets/Paladin/circle",
                               "count": "1"]

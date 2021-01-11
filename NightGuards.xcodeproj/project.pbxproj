@@ -16,6 +16,9 @@
 		D09EF398259D242A00B150E9 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = D09EF397259D242A00B150E9 /* art.scnassets */; };
 		D09EF3AF25A1432800B150E9 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09EF3AE25A1432800B150E9 /* Animator.swift */; };
 		D09EF3B425A2616E00B150E9 /* TapLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09EF3B325A2616E00B150E9 /* TapLayer.swift */; };
+		D0C2090125ACE0F2003914DE /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C2090025ACE0F2003914DE /* StoreKit.framework */; };
+		D0C2090725AD0292003914DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2090625AD0292003914DE /* Constants.swift */; };
+		D0C2090C25AD0851003914DE /* Purchaser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2090B25AD0851003914DE /* Purchaser.swift */; };
 		D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */ = {isa = PBXBuildFile; fileRef = D0CBB5722579D964005BD4F8 /* Cone.reality */; };
 		D0D246AD25884A00008910BE /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0D246AB25884A00008910BE /* DataModel.xcdatamodeld */; };
 		EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A7254256C916200DE9837 /* LaunchScreen.swift */; };
@@ -60,6 +63,9 @@
 		D09EF397259D242A00B150E9 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		D09EF3AE25A1432800B150E9 /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		D09EF3B325A2616E00B150E9 /* TapLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapLayer.swift; sourceTree = "<group>"; };
+		D0C2090025ACE0F2003914DE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		D0C2090625AD0292003914DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D0C2090B25AD0851003914DE /* Purchaser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchaser.swift; sourceTree = "<group>"; };
 		D0CBB5722579D964005BD4F8 /* Cone.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone.reality; sourceTree = "<group>"; };
 		D0D246AC25884A00008910BE /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		EF0A7254256C916200DE9837 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
@@ -88,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0C2090125ACE0F2003914DE /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				D09EF3AE25A1432800B150E9 /* Animator.swift */,
+				D0C2090B25AD0851003914DE /* Purchaser.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -153,6 +161,14 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		D0C208FF25ACE0F2003914DE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D0C2090025ACE0F2003914DE /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EFFAB4EC2565ACA4008FDDF4 = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +176,7 @@
 				EFFAB50B2565ACA6008FDDF4 /* NightGuardsTests */,
 				EFFAB5162565ACA6008FDDF4 /* NightGuardsUITests */,
 				EFFAB4F62565ACA4008FDDF4 /* Products */,
+				D0C208FF25ACE0F2003914DE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -186,6 +203,7 @@
 				EFFAB5002565ACA5008FDDF4 /* Preview Content */,
 				EF0A7254256C916200DE9837 /* LaunchScreen.swift */,
 				D09EF397259D242A00B150E9 /* art.scnassets */,
+				D0C2090625AD0292003914DE /* Constants.swift */,
 			);
 			path = NightGuards;
 			sourceTree = "<group>";
@@ -357,8 +375,10 @@
 				EFFAB4FB2565ACA4008FDDF4 /* ContentView.swift in Sources */,
 				EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */,
 				EF5D66C7257EEC22003E0A36 /* SharedUserSelections.swift in Sources */,
+				D0C2090725AD0292003914DE /* Constants.swift in Sources */,
 				D099BEA7258AB17E004A671B /* ActionButtonView.swift in Sources */,
 				EFFAB4F92565ACA4008FDDF4 /* AppDelegate.swift in Sources */,
+				D0C2090C25AD0851003914DE /* Purchaser.swift in Sources */,
 				EFFAB5292565CC23008FDDF4 /* ARDisplayView.swift in Sources */,
 				D09EF3B425A2616E00B150E9 /* TapLayer.swift in Sources */,
 				EFFAB4FD2565ACA4008FDDF4 /* Experience.rcproject in Sources */,
