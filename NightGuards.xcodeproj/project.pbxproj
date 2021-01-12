@@ -19,6 +19,7 @@
 		D0C2090125ACE0F2003914DE /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C2090025ACE0F2003914DE /* StoreKit.framework */; };
 		D0C2090725AD0292003914DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2090625AD0292003914DE /* Constants.swift */; };
 		D0C2090C25AD0851003914DE /* Purchaser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2090B25AD0851003914DE /* Purchaser.swift */; };
+		D0C2091425AD2F0F003914DE /* BuyAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2091325AD2F0F003914DE /* BuyAlert.swift */; };
 		D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */ = {isa = PBXBuildFile; fileRef = D0CBB5722579D964005BD4F8 /* Cone.reality */; };
 		D0D246AD25884A00008910BE /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0D246AB25884A00008910BE /* DataModel.xcdatamodeld */; };
 		EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A7254256C916200DE9837 /* LaunchScreen.swift */; };
@@ -66,6 +67,7 @@
 		D0C2090025ACE0F2003914DE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		D0C2090625AD0292003914DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D0C2090B25AD0851003914DE /* Purchaser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchaser.swift; sourceTree = "<group>"; };
+		D0C2091325AD2F0F003914DE /* BuyAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyAlert.swift; sourceTree = "<group>"; };
 		D0CBB5722579D964005BD4F8 /* Cone.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone.reality; sourceTree = "<group>"; };
 		D0D246AC25884A00008910BE /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		EF0A7254256C916200DE9837 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				EFFAB52D2565D7E5008FDDF4 /* SettingsUIView.swift */,
 				D099BEA6258AB17E004A671B /* ActionButtonView.swift */,
 				D09EF3B325A2616E00B150E9 /* TapLayer.swift */,
+				D0C2091325AD2F0F003914DE /* BuyAlert.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				EFFAB4FB2565ACA4008FDDF4 /* ContentView.swift in Sources */,
 				EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */,
 				EF5D66C7257EEC22003E0A36 /* SharedUserSelections.swift in Sources */,
+				D0C2091425AD2F0F003914DE /* BuyAlert.swift in Sources */,
 				D0C2090725AD0292003914DE /* Constants.swift in Sources */,
 				D099BEA7258AB17E004A671B /* ActionButtonView.swift in Sources */,
 				EFFAB4F92565ACA4008FDDF4 /* AppDelegate.swift in Sources */,

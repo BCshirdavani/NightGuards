@@ -15,27 +15,25 @@ protocol Hero {
     var arAnchorContainer: AnchorContainer? { get set }
     var heroMapURLString: String? { get set }
     var heroName: String { get }
-    var shouldAnimate: Bool { get }
 }
 
 // MARK: implementation of Hero protocol
 final class HeroImpl: Hero, Codable {
-    var shouldAnimate: Bool
     
     var arAnchorContainer: AnchorContainer?
     
     var heroMapURLString: String?
         
-    var heroUnlocked: Bool = true
+    var heroUnlocked: Bool
     
     let heroName: String
     
     init(heroName: String) {
         self.heroName = heroName
-        if heroName == K.TRUMP {
-            shouldAnimate = true
+        if [K.DONUT, K.PALADIN].contains(heroName) {
+            self.heroUnlocked = true
         } else {
-            shouldAnimate = false
+            self.heroUnlocked = false
         }
     }
     

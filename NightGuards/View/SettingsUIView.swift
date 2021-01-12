@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsUIView: View {
 	@State private var isOnSetting1 = false
+    let purchaser = Purchaser()
 
 	var body: some View {
 		List{
@@ -20,7 +21,7 @@ struct SettingsUIView: View {
 				Text("restore purchases?")
 				Spacer()
 				Section {
-					Button(action: {print("resrore pressed")}) {
+                    Button(action: {purchaser.restore()}) {
 						Text("Restore").padding(10)
 					}
 					.buttonStyle(PlainButtonStyle())
@@ -29,7 +30,7 @@ struct SettingsUIView: View {
 					.background(Color.green)
 					.accentColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
 				}
-			}
+            }
 			.padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
 			Button(action: {print("test pressed")}) {
 				Text("test")

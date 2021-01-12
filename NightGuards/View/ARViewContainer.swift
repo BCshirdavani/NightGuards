@@ -325,7 +325,7 @@ final class ARViewContainer: NSObject, ARSessionDelegate, ARSCNViewDelegate, UIV
     func loadMap() {
         guard let worldMapData = retrieveWorldMapData(from: worldMapURL),
               let worldMap = unarchive(worldMapData: worldMapData) else { return }
-        print(worldMap)
+//        print(worldMap)
         configAR(with: worldMap)
     }
         
