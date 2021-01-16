@@ -13,7 +13,7 @@ struct ARDisplayView: View {
     
 	let arViewContainer: ARViewContainer
 	@State private var anchorPlaced: Bool = false
-    @State private var heroSelected: String = "none"
+    @State private var heroSelected: String = K.DONUT
     @State private var camStringStat: String = ""
     @State private var mapName: String = "alpha"
     @State private var roomIndex: Int = 0
@@ -26,7 +26,7 @@ struct ARDisplayView: View {
 	}
 
     var body: some View {
-		ZStack {
+        ZStack {
             arViewContainer.onTapWithLocation({ (point) in
                 setCamStatus()
                 print("  - - tapped point: \(point)")
@@ -54,11 +54,6 @@ struct ARDisplayView: View {
                 arViewContainer.saveMap()
             }
             VStack {
-                HStack {
-                    Image.init(systemName: "bed.double.fill").padding([.leading, .top], 5.0)
-                    Text("Loc: \(mapName)").padding([.top], 5.0)
-                    Spacer()
-                }
                 Spacer()
                 if showButtons {
                     HStack{
@@ -68,28 +63,28 @@ struct ARDisplayView: View {
                             }
                         Spacer()
                         ZStack{
-                            Circle()
-                                .frame(width: 60, height: 60, alignment: .center)
-                                .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
-                                .foregroundColor(.pink)
+                            Image(systemName: "arrow.clockwise.circle.fill")
+                                .foregroundColor(.red)
+                                .font(.system(size: 60, weight: .medium))
                                 .onTapGesture {
                                     resetMap()
                                 }
-                            Text("reset").foregroundColor(.white)
                         }
                         Spacer()
                         NavigationLink(destination: HeroUIView(heroSelected: $heroSelected, anchorPlaced: $anchorPlaced, heroes: heroes, mapName: $mapName)) {
                             ZStack {
+                                Image(uiImage: UIImage.init(named: heroSelected)!)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 60, height: 60)
+                                    .clipShape(Circle())
                                 Circle()
+                                    .strokeBorder(Color.white, lineWidth: 1)
                                     .frame(width: 60, height: 60, alignment: .center)
                                     .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
-                                    .foregroundColor(.black)
-                                Text(heroSelected).foregroundColor(.white)
-                                
                             }
                         }
                     }.transition(.move(edge: .bottom))
-                    
                 }
             }
         }

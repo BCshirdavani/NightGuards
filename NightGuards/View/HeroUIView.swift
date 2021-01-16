@@ -27,140 +27,93 @@ struct HeroUIView: View {
         self.heroes = heroes
     }
     
-	var body: some View {
-		Text("Choose Guardian Here")
-		List {
-            // MARK: donut
-            HStack {
-                Text(K.DONUT).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                Spacer()
-                Image.init(systemName: "smallcircle.fill.circle.fill").scaleEffect(2)
-            }.contentShape(Rectangle()).onTapGesture {
-                self.heroSelected = K.DONUT
-                if let anchorStatus = Heroes.heroDict[self.heroSelected]?.isPlaced() {
-                    self.anchorPlaced = anchorStatus
-                }
-            }.padding(10)
-            .listRowBackground(self.heroSelected == K.DONUT ? Color(UIColor.red) : Color(UIColor.systemBackground))
-            // MARK: paladin
-            HStack {
-                Text(K.PALADIN).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                Spacer()
-                Image.init(systemName: "staroflife").scaleEffect(2)
-            }.contentShape(Rectangle()).onTapGesture {
-                self.heroSelected = K.PALADIN
-                if let anchorStatus = Heroes.heroDict[self.heroSelected]?.isPlaced() {
-                    self.anchorPlaced = anchorStatus
-                }
-                if let paladinAnimator = Animators.animeDict[self.heroSelected] {
-                    print(" ~ ~ paladin animator already exists")
-                } else {
-                    let paladinNode = SCNNode()
-                    paladinNode.name = "\(K.PALADIN)Node_heroUI"
-                    let paladinAnimator = Animator(heroToAnimate: Heroes.heroDict[self.heroSelected]!, sceneNode: paladinNode)
-                    Animators.animeDict.updateValue(paladinAnimator, forKey: self.heroSelected)
-                    if let paladinAnimator = Animators.animeDict[K.PALADIN] {
-                        paladinAnimator.loadAnimations()
-                    }
-                }
-            }.padding(10)
-            .listRowBackground(self.heroSelected == K.PALADIN ? Color(UIColor.red) : Color(UIColor.systemBackground))
-            // MARK: lucha
-            HStack {
-                Text(K.LUCHA).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                Spacer()
-                Image.init(systemName: "staroflife").scaleEffect(2)
-            }.contentShape(Rectangle()).onTapGesture {
-                let available: Bool = checkPurchaseStatus(itemName: K.LUCHA)
-                if available {
-                    self.heroSelected = K.LUCHA
-                    Heroes.heroDict[self.heroSelected]?.heroUnlocked = available
+    var body: some View {
+        VStack {
+            List {
+                // MARK: donut
+                HStack {
+                    HeroCard(cardName: K.DONUT, price: "FREE", unlocked: true, placed: (Heroes.heroDict[K.DONUT]?.isPlaced())!)
+                }.contentShape(Rectangle()).onTapGesture {
+                    self.heroSelected = K.DONUT
                     if let anchorStatus = Heroes.heroDict[self.heroSelected]?.isPlaced() {
                         self.anchorPlaced = anchorStatus
                     }
-                    // TODO: redundant code with arViewContainer
-                    if let luchaAnimator = Animators.animeDict[self.heroSelected] {
-                        print(" ~ ~ lucha animator already exists")
-                    } else {
-                        let luchaNode = SCNNode()
-                        luchaNode.name = "\(K.LUCHA)Node_heroUI"
-                        let luchaAnimator = Animator(heroToAnimate: Heroes.heroDict[self.heroSelected]!, sceneNode: luchaNode)
-                        Animators.animeDict.updateValue(luchaAnimator, forKey: self.heroSelected)
-                        if let luchaAnimator = Animators.animeDict[K.LUCHA] {
-                            luchaAnimator.loadAnimations()
-                        }
-                    }
                 }
-            }.padding(10)
-            .listRowBackground(self.heroSelected == K.LUCHA ? Color(UIColor.red) : Color(UIColor.systemBackground))
-            .alert(isPresented: self.$alertLucha) { () -> Alert in
-                buyAlert(heroName: K.LUCHA)
-            }
-            // MARK: ninja
-            HStack {
-                Text(K.NINJA).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                Spacer()
-                Image.init(systemName: "staroflife").scaleEffect(2)
-            }.contentShape(Rectangle()).onTapGesture {
-                let available: Bool = checkPurchaseStatus(itemName: K.NINJA)
-                if available {
-                    self.heroSelected = K.NINJA
-                    Heroes.heroDict[self.heroSelected]?.heroUnlocked = available
-                    if let anchorStatus = Heroes.heroDict[self.heroSelected]?.isPlaced() {
-                        self.anchorPlaced = anchorStatus
+                .listRowBackground(self.heroSelected == K.DONUT ? Color(UIColor.secondarySystemBackground) : Color(UIColor.systemBackground))
+                
+                // MARK: paladin
+                HStack {
+                    HeroCard(cardName: K.PALADIN, price: "FREE", unlocked: true, placed: (Heroes.heroDict[K.PALADIN]?.isPlaced())!)
+                }.contentShape(Rectangle()).onTapGesture {
+                    heroSelectionHandler(heroName: K.PALADIN, available: true)
+                }.padding(2)
+                .listRowBackground(self.heroSelected == K.PALADIN ? Color(UIColor.secondarySystemBackground) : Color(UIColor.systemBackground))
+                
+                // MARK: lucha
+                HStack {
+                    HeroCard(cardName: K.LUCHA, price: "0.99", unlocked: false, placed: (Heroes.heroDict[K.LUCHA]?.isPlaced())!)
+                }.contentShape(Rectangle()).onTapGesture {
+                    let available: Bool = checkPurchaseStatus(itemName: K.LUCHA)
+                    if available {
+                        heroSelectionHandler(heroName: K.LUCHA, available: available)
                     }
-                    // TODO: redundant code with arViewContainer
-                    if let ninjaAnimator = Animators.animeDict[self.heroSelected] {
-                        print(" ~ ~ ninja animator already exists")
-                    } else {
-                        let ninjaNode = SCNNode()
-                        ninjaNode.name = "\(K.NINJA)Node_heroUI"
-                        let ninjaAnimator = Animator(heroToAnimate: Heroes.heroDict[self.heroSelected]!, sceneNode: ninjaNode)
-                        Animators.animeDict.updateValue(ninjaAnimator, forKey: self.heroSelected)
-                        if let ninjaAnimator = Animators.animeDict[K.NINJA] {
-                            ninjaAnimator.loadAnimations()
-                        }
-                    }
+                }.padding(2)
+                .listRowBackground(self.heroSelected == K.LUCHA ? Color(UIColor.secondarySystemBackground) : Color(UIColor.systemBackground))
+                .alert(isPresented: self.$alertLucha) { () -> Alert in
+                    buyAlert(heroName: K.LUCHA)
                 }
-            }.padding(10)
-            .listRowBackground(self.heroSelected == K.NINJA ? Color(UIColor.red) : Color(UIColor.systemBackground))
-            .alert(isPresented: self.$alertNinja) { () -> Alert in
-                buyAlert(heroName: K.NINJA)
-            }
-            // MARK: trump
-            HStack {
-                Text(K.TRUMP).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                Spacer()
-                Image.init(systemName: "figure.walk").scaleEffect(2)
-            }.contentShape(Rectangle()).onTapGesture {
-                let available: Bool = checkPurchaseStatus(itemName: K.TRUMP)
-                if available {
-                    self.heroSelected = K.TRUMP
-                    Heroes.heroDict[self.heroSelected]?.heroUnlocked = available
-                    if let anchorStatus = Heroes.heroDict[self.heroSelected]?.isPlaced() {
-                        self.anchorPlaced = anchorStatus
+                
+                // MARK: ninja
+                HStack {
+                    HeroCard(cardName: K.NINJA, price: "0.99", unlocked: false, placed: (Heroes.heroDict[K.NINJA]?.isPlaced())!)
+                }.contentShape(Rectangle()).onTapGesture {
+                    let available: Bool = checkPurchaseStatus(itemName: K.NINJA)
+                    if available {
+                        heroSelectionHandler(heroName: K.NINJA, available: available)
                     }
-                    // TODO: redundant code with arViewContainer
-                    if let tumpAnimator = Animators.animeDict[self.heroSelected] {
-                        print(" ~ ~ trump animator already exists")
-                    } else {
-                        let trumpNode = SCNNode()
-                        trumpNode.name = "\(K.TRUMP)Node_heroUI"
-                        let trumpAnimator = Animator(heroToAnimate: Heroes.heroDict[self.heroSelected]!, sceneNode: trumpNode)
-                        Animators.animeDict.updateValue(trumpAnimator, forKey: self.heroSelected)
-                        if let trumpAnimator = Animators.animeDict[K.TRUMP] {
-                            trumpAnimator.loadAnimations()
-                        }
-                    }
+                }.padding(2)
+                .listRowBackground(self.heroSelected == K.NINJA ? Color(UIColor.secondarySystemBackground) : Color(UIColor.systemBackground))
+                .alert(isPresented: self.$alertNinja) { () -> Alert in
+                    buyAlert(heroName: K.NINJA)
                 }
-            }.padding(10)
-            .listRowBackground(self.heroSelected == K.TRUMP ? Color(UIColor.red) : Color(UIColor.systemBackground))
-            .alert(isPresented: self.$alertTrump) { () -> Alert in
-                buyAlert(heroName: K.TRUMP)
+                
+                // MARK: trump
+                HStack {
+                    HeroCard(cardName: K.TRUMP, price: "0.99", unlocked: false, placed: (Heroes.heroDict[K.TRUMP]?.isPlaced())!)
+                }.contentShape(Rectangle()).onTapGesture {
+                    let available: Bool = checkPurchaseStatus(itemName: K.TRUMP)
+                    if available {
+                        heroSelectionHandler(heroName: K.TRUMP, available: available)
+                    }
+                }.padding(2)
+                .listRowBackground(self.heroSelected == K.TRUMP ? Color(UIColor.secondarySystemBackground) : Color(UIColor.systemBackground))
+                .alert(isPresented: self.$alertTrump) { () -> Alert in
+                    buyAlert(heroName: K.TRUMP)
+                }
             }
-		}
-		.navigationBarTitle(Text("Guards"), displayMode: .inline)
-	}
+        }
+        .navigationBarTitle(Text("Guards"), displayMode: .inline)
+    }
+    
+    func heroSelectionHandler(heroName: String, available: Bool) {
+        self.heroSelected = heroName
+        Heroes.heroDict[self.heroSelected]?.heroUnlocked = available
+        if let anchorStatus = Heroes.heroDict[self.heroSelected]?.isPlaced() {
+            self.anchorPlaced = anchorStatus
+        }
+        // TODO: redundant code with arViewContainer
+        if let animator = Animators.animeDict[self.heroSelected] {
+            print(" ~ ~ trump animator already exists")
+        } else {
+            let node = SCNNode()
+            node.name = "\(heroName)Node_heroUI"
+            let animator = Animator(heroToAnimate: Heroes.heroDict[self.heroSelected]!, sceneNode: node)
+            Animators.animeDict.updateValue(animator, forKey: self.heroSelected)
+            if let animator = Animators.animeDict[heroName] {
+                animator.loadAnimations()
+            }
+        }
+    }
     
     func selectHero(hero: Hero) -> Bool {
         let heroUnlocked: Bool = self.purchaser.isPurchased(itemName: hero.heroName)
@@ -208,7 +161,7 @@ struct HeroUIView: View {
 
 struct HeroUIView_Previews: PreviewProvider {
 	static var previews: some View {
-//        HeroUIView()
+//        HeroUIView(heroSelected: <#Binding<String>#>, anchorPlaced: <#Binding<Bool>#>, heroes: <#Heroes#>, mapName: <#Binding<String>#>)
         Text("test")
 	}
 }

@@ -17,8 +17,12 @@ struct ActionButtonView: View {
             Circle()
                 .frame(width: 60, height: 60, alignment: .center)
                 .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 15)
-                .foregroundColor(.black)
-            Text(buttonText()).foregroundColor(.white)
+                .foregroundColor(.blue)
+            anchorPlaced ? Image(systemName: "move.3d")
+                .foregroundColor(.white)
+                .font(.system(size: 24, weight: .medium)) : Image(systemName: "mappin.and.ellipse")
+                .foregroundColor(.white)
+                .font(.system(size: 24, weight: .medium))
         }
     }
     
@@ -30,6 +34,7 @@ struct ActionButtonView: View {
 struct ActionButtonView_Previews: PreviewProvider {
     static var previews: some View {
 //        ActionButtonView()
+        Image.init(systemName: "arrow.clockwise.circle.fill").foregroundColor(.white).scaleEffect(3.0)
         Text("test")
     }
 }
