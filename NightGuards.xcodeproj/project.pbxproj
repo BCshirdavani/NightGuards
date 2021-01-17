@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D02F4A52259931EB00312F19 /* Robot.reality in Resources */ = {isa = PBXBuildFile; fileRef = D02F4A51259931EB00312F19 /* Robot.reality */; };
-		D048D1BF257C345C00C9A376 /* Cone2.reality in Resources */ = {isa = PBXBuildFile; fileRef = D048D1BE257C345C00C9A376 /* Cone2.reality */; };
 		D048D1C725855DAC00C9A376 /* HeroImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1C625855DAC00C9A376 /* HeroImpl.swift */; };
 		D048D1CC25855FF500C9A376 /* HeroFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1CB25855FF500C9A376 /* HeroFactory.swift */; };
 		D048D1D82587055600C9A376 /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048D1D72587055600C9A376 /* ARViewContainer.swift */; };
@@ -20,16 +18,13 @@
 		D0C2090725AD0292003914DE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2090625AD0292003914DE /* Constants.swift */; };
 		D0C2090C25AD0851003914DE /* Purchaser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2090B25AD0851003914DE /* Purchaser.swift */; };
 		D0C2091425AD2F0F003914DE /* BuyAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2091325AD2F0F003914DE /* BuyAlert.swift */; };
-		D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */ = {isa = PBXBuildFile; fileRef = D0CBB5722579D964005BD4F8 /* Cone.reality */; };
 		D0CFB29F25AFFD0E00E92CA3 /* HeroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CFB29E25AFFD0E00E92CA3 /* HeroCard.swift */; };
 		D0D246AD25884A00008910BE /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0D246AB25884A00008910BE /* DataModel.xcdatamodeld */; };
 		EF0A7255256C916200DE9837 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A7254256C916200DE9837 /* LaunchScreen.swift */; };
-		EF5D66C2257EE8BC003E0A36 /* kangaroo.usdz in Resources */ = {isa = PBXBuildFile; fileRef = EF5D66C1257EE8BC003E0A36 /* kangaroo.usdz */; };
 		EF5D66C7257EEC22003E0A36 /* SharedUserSelections.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5D66C6257EEC22003E0A36 /* SharedUserSelections.swift */; };
 		EFF97F09256F13700022E1A5 /* HeroUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF97F08256F13700022E1A5 /* HeroUIView.swift */; };
 		EFFAB4F92565ACA4008FDDF4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFFAB4F82565ACA4008FDDF4 /* AppDelegate.swift */; };
 		EFFAB4FB2565ACA4008FDDF4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFFAB4FA2565ACA4008FDDF4 /* ContentView.swift */; };
-		EFFAB4FD2565ACA4008FDDF4 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = EFFAB4FC2565ACA4008FDDF4 /* Experience.rcproject */; };
 		EFFAB4FF2565ACA5008FDDF4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFFAB4FE2565ACA5008FDDF4 /* Assets.xcassets */; };
 		EFFAB5022565ACA5008FDDF4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFFAB5012565ACA5008FDDF4 /* Preview Assets.xcassets */; };
 		EFFAB50D2565ACA6008FDDF4 /* NightGuardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFFAB50C2565ACA6008FDDF4 /* NightGuardsTests.swift */; };
@@ -56,8 +51,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D02F4A51259931EB00312F19 /* Robot.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Robot.reality; sourceTree = "<group>"; };
-		D048D1BE257C345C00C9A376 /* Cone2.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone2.reality; sourceTree = "<group>"; };
 		D048D1C625855DAC00C9A376 /* HeroImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroImpl.swift; sourceTree = "<group>"; };
 		D048D1CB25855FF500C9A376 /* HeroFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroFactory.swift; sourceTree = "<group>"; };
 		D048D1D72587055600C9A376 /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
@@ -69,17 +62,14 @@
 		D0C2090625AD0292003914DE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D0C2090B25AD0851003914DE /* Purchaser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchaser.swift; sourceTree = "<group>"; };
 		D0C2091325AD2F0F003914DE /* BuyAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyAlert.swift; sourceTree = "<group>"; };
-		D0CBB5722579D964005BD4F8 /* Cone.reality */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cone.reality; sourceTree = "<group>"; };
 		D0CFB29E25AFFD0E00E92CA3 /* HeroCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroCard.swift; sourceTree = "<group>"; };
 		D0D246AC25884A00008910BE /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		EF0A7254256C916200DE9837 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
-		EF5D66C1257EE8BC003E0A36 /* kangaroo.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = kangaroo.usdz; sourceTree = "<group>"; };
 		EF5D66C6257EEC22003E0A36 /* SharedUserSelections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUserSelections.swift; sourceTree = "<group>"; };
 		EFF97F08256F13700022E1A5 /* HeroUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroUIView.swift; sourceTree = "<group>"; };
 		EFFAB4F52565ACA4008FDDF4 /* NightGuards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NightGuards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFFAB4F82565ACA4008FDDF4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EFFAB4FA2565ACA4008FDDF4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		EFFAB4FC2565ACA4008FDDF4 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
 		EFFAB4FE2565ACA5008FDDF4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EFFAB5012565ACA5008FDDF4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EFFAB5032565ACA5008FDDF4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -155,18 +145,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		D048D1DE258705B300C9A376 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				D02F4A51259931EB00312F19 /* Robot.reality */,
-				EF5D66C1257EE8BC003E0A36 /* kangaroo.usdz */,
-				D048D1BE257C345C00C9A376 /* Cone2.reality */,
-				D0CBB5722579D964005BD4F8 /* Cone.reality */,
-				EFFAB4FC2565ACA4008FDDF4 /* Experience.rcproject */,
-			);
-			path = Assets;
-			sourceTree = "<group>";
-		};
 		D0C208FF25ACE0F2003914DE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -199,7 +177,6 @@
 		EFFAB4F72565ACA4008FDDF4 /* NightGuards */ = {
 			isa = PBXGroup;
 			children = (
-				D048D1DE258705B300C9A376 /* Assets */,
 				D02F49EF259547E100312F19 /* Controllers */,
 				D048D1DD258705AE00C9A376 /* View */,
 				D048D1DC258705A700C9A376 /* Model */,
@@ -343,12 +320,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D048D1BF257C345C00C9A376 /* Cone2.reality in Resources */,
-				D02F4A52259931EB00312F19 /* Robot.reality in Resources */,
-				EF5D66C2257EE8BC003E0A36 /* kangaroo.usdz in Resources */,
 				D09EF398259D242A00B150E9 /* art.scnassets in Resources */,
 				EFFAB5022565ACA5008FDDF4 /* Preview Assets.xcassets in Resources */,
-				D0CBB5732579D964005BD4F8 /* Cone.reality in Resources */,
 				EFFAB4FF2565ACA5008FDDF4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,7 +362,6 @@
 				D0C2090C25AD0851003914DE /* Purchaser.swift in Sources */,
 				EFFAB5292565CC23008FDDF4 /* ARDisplayView.swift in Sources */,
 				D09EF3B425A2616E00B150E9 /* TapLayer.swift in Sources */,
-				EFFAB4FD2565ACA4008FDDF4 /* Experience.rcproject in Sources */,
 				D048D1CC25855FF500C9A376 /* HeroFactory.swift in Sources */,
 				D09EF3AF25A1432800B150E9 /* Animator.swift in Sources */,
 				D048D1C725855DAC00C9A376 /* HeroImpl.swift in Sources */,
